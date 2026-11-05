@@ -16,9 +16,12 @@ class MainActivity : Activity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val bg = Color.parseColor("#05080D")
+        val bg = Color.parseColor("#F4F0FB")
         window.statusBarColor = bg
         window.navigationBarColor = bg
+        @Suppress("DEPRECATION")
+        window.decorView.systemUiVisibility =
+            android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
 
         web = WebView(this)
         web.setBackgroundColor(bg)
