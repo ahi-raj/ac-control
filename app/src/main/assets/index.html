@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px;-webkit-tap-highlight-color:transparent;user-select:none}input{user-select:text;-webkit-user-select:text}img{max-width:100%}</style>
+<style>:root{height:100%;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px;-webkit-tap-highlight-color:transparent;user-select:none}input{user-select:text;-webkit-user-select:text}img{max-width:100%}</style>
 <title>Room AC Remote</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Gaegu:wght@700&display=swap">
@@ -16,11 +16,16 @@
   --hand:"Gaegu","Fredoka",ui-rounded,cursive;
 }
 [hidden]{display:none!important}
-html,body{background:#cfe7a0}
+html,body{background:#cfe7a0;height:100%;overflow:hidden}
 body{color:var(--ink);font-family:var(--display);
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 40px}
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px 0;box-sizing:border-box}
 #world{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.wrap{position:relative;z-index:1;max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.wrap{position:relative;z-index:1;max-width:440px;margin:0 auto;display:flex;flex-direction:column;height:100%}
+.top{flex:none;display:flex;flex-direction:column;gap:8px}
+.scroller{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:16px;
+  padding:16px 2px calc(28px + env(safe-area-inset-bottom,0px));margin:0 -2px;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16px);mask-image:linear-gradient(180deg,transparent 0,#000 16px)}
+.scroller::-webkit-scrollbar{display:none}
 button{font-family:inherit;color:var(--ink)}
 button:focus-visible,input:focus-visible{outline:3px dashed var(--ink);outline-offset:3px}
 .sticker{background:var(--paper);border:2px solid var(--ink);box-shadow:0 3px 0 var(--ink)}
@@ -49,7 +54,7 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
 .lbl{font:600 14px var(--display);margin:0 0 12px;display:flex;justify-content:space-between;gap:8px}
 .lbl b{font:700 18px var(--hand);color:var(--accent);line-height:1}
 /* ---------- hero: Mochi on the meadow ---------- */
-.hero{position:relative;aspect-ratio:360/250;width:min(100%,330px);max-width:100%;margin:-6px auto -10px}
+.hero{position:relative;aspect-ratio:360/250;width:min(100%,330px,52vh);max-width:100%;margin:-4px auto -8px}
 .hero svg,.hero canvas{position:absolute;inset:0;width:100%;height:100%}
 .hero canvas{pointer-events:none}
 .chips{position:absolute;bottom:4px;left:0;display:flex;gap:6px;z-index:2}
@@ -90,12 +95,12 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
 .blink{animation:eyeblink 4s infinite;transform-box:fill-box;transform-origin:center}
 @keyframes eyeblink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
 /* ---------- temperature ---------- */
-.tempcard{display:flex;flex-direction:column;gap:10px;padding:12px 14px}.trow1{display:flex;align-items:center;justify-content:space-between;gap:10px}.trow1 .mood{text-align:left;flex:1;min-width:0}.trow .track{flex:1}
+.tempcard{display:flex;flex-direction:column;gap:10px}.trow1{display:flex;align-items:center;justify-content:space-between;gap:10px}.trow1 .mood{text-align:left;flex:1;min-width:0}.trow .track{flex:1}
 .mood{font:700 20px var(--hand);text-align:center;min-height:22px;line-height:1.1}
 .trow{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.big{font:700 46px var(--display);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;transition:color .4s}
+.big{font:700 56px var(--display);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;transition:color .4s}
 .big sup{font-size:22px;font-weight:600;vertical-align:top;margin-left:2px;color:var(--soft)}
-.bump{width:44px;height:44px;flex:none;border-radius:50%;border:2px solid var(--ink);background:var(--accent-soft);font:600 26px var(--display);cursor:pointer;box-shadow:0 3px 0 var(--ink);transition:transform .12s}
+.bump{width:50px;height:50px;flex:none;border-radius:50%;border:2px solid var(--ink);background:var(--accent-soft);font:600 26px var(--display);cursor:pointer;box-shadow:0 3px 0 var(--ink);transition:transform .12s}
 .bump:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
 .track{position:relative;height:34px;border-radius:99px;border:2px solid var(--ink);touch-action:none;cursor:pointer;
   background:linear-gradient(90deg,#bfe0ff,#e7f3ff 22%,#d6ecaa 50%,#fff0b3 74%,#ffc79c)}
@@ -106,7 +111,7 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
 .ends{display:flex;justify-content:space-between;font:700 16px var(--hand);color:var(--soft)}
 .off .ctrl,.off .ctrlx{pointer-events:none}.off .ctrl>*,.off .ctrlx{opacity:.45;filter:grayscale(.6)}.off .tabs{opacity:1}
 /* ---------- tabs ---------- */
-.panel{padding:12px 14px 14px}.tempcard::after{left:16px;right:auto}.panel::after{left:auto!important;right:18px!important}
+
 .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px;padding:4px;border:2px solid var(--ink);border-radius:16px;background:#f3ead8}
 .tabs button{border:0;background:none;border-radius:11px;padding:8px 2px;font:600 14px var(--display);cursor:pointer;transition:background .2s}
 .tabs button[aria-selected="true"]{background:var(--paper-solid);box-shadow:0 0 0 2px var(--ink),0 2px 0 2px var(--ink)}
@@ -186,15 +191,15 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
 </div>
 
 <div class="wrap on" id="app">
-  <header class="sticker">
-    <div><h1 id="devName">Bedroom</h1><span class="pill demo" id="pill"><i></i><span id="pillTxt">Demo mode</span></span></div>
-    <button class="link" id="signout" hidden>Sign out</button>
-    <button class="pwr" id="pwr" aria-label="Power"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 7a8 8 0 1 0 11.4 0"/></svg></button>
-  </header>
-  <small id="devSub" hidden>Panasonic SU18BKY3W</small>
-  <div class="scroll" id="devPick" hidden></div>
-
-  <section class="hero" id="stage">
+  <div class="top">
+    <header class="sticker">
+      <div><h1 id="devName">Bedroom</h1><span class="pill demo" id="pill"><i></i><span id="pillTxt">Demo</span></span></div>
+      <button class="link" id="signout" hidden>Sign out</button>
+      <button class="pwr" id="pwr" aria-label="Power"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 7a8 8 0 1 0 11.4 0"/></svg></button>
+    </header>
+    <small id="devSub" hidden>Panasonic SU18BKY3W</small>
+    <div class="scroll" id="devPick" hidden></div>
+    <section class="hero" id="stage">
     <svg viewBox="0 0 360 250" aria-label="Mochi the bunny reacts to your room">
       <!-- the AC unit, with a face -->
       <g id="acUnit" stroke="#3d3229" stroke-width="2.5" stroke-linecap="round">
@@ -241,50 +246,55 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
     <div class="chips"><span class="tag sticker" id="modeTag">Cool</span><span class="tag sticker" id="room">Room --</span></div>
     <div class="bubble" id="bubble"></div>
   </section>
+  </div>
 
+  <div class="scroller" id="scroller">
   <section class="card sticker tempcard">
-    <div class="trow1"><div class="mood" id="mood">Just right!</div><div class="big" id="temp">24<sup>°C</sup></div></div>
+    <div class="mood" id="mood">Just right!</div>
     <div class="trow ctrlx">
       <button class="bump" id="minus" aria-label="Colder">−</button>
+      <div class="big" id="temp">24<sup>°C</sup></div>
+      <button class="bump" id="plus" aria-label="Warmer">+</button>
+    </div>
+    <div class="ctrlx">
       <div class="track" id="track" role="slider" aria-label="Temperature" aria-valuemin="16" aria-valuemax="30" tabindex="0">
         <div class="knob" id="knob"><svg id="knobIco" viewBox="0 0 24 24" fill="none" stroke="#3d3229" stroke-width="2.2" stroke-linecap="round"></svg></div></div>
-      <button class="bump" id="plus" aria-label="Warmer">+</button>
+      <div class="ends" style="margin-top:6px"><span>16° brrr</span><span>30° toasty</span></div>
     </div>
   </section>
 
-  <section class="card sticker panel">
-    <div class="tabs" role="tablist">
-      <button role="tab" data-tab="mode" aria-selected="true">Mode</button>
-      <button role="tab" data-tab="fan" aria-selected="false">Fan</button>
-      <button role="tab" data-tab="air" aria-selected="false">Air</button>
-      <button role="tab" data-tab="more" aria-selected="false">More</button>
-    </div>
-    <div class="pane ctrl" data-pane="mode">
-      <div class="row cols4" id="modes"></div>
-      <p class="lbl sub">Scenes</p>
-      <div class="row cols3" id="scenes"></div>
-    </div>
-    <div class="pane ctrl" data-pane="fan" hidden>
-      <p class="lbl"><span>Fan speed</span><b id="fanTxt">Auto</b></p>
-      <div class="row cols5" id="fans"></div>
-      <div class="row cols3" id="presets" style="margin-top:10px"></div>
-    </div>
-    <div class="pane ctrl" data-pane="air" hidden>
-      <p class="lbl"><span>Airflow direction</span><b id="swTxt">Auto</b></p>
-      <svg class="swingviz" id="swingviz" viewBox="0 0 300 64" preserveAspectRatio="xMidYMid meet"></svg>
-      <div class="row cols6" id="swing"></div>
-      <p class="lbl sub"><span>Converti capacity</span><b id="cnvTxt">Off</b></p>
-      <div class="scroll" id="cnv"></div>
-    </div>
-    <div class="pane" data-pane="more" hidden>
-      <div class="ctrl">
-        <div class="toggle"><div><b>nanoe clean air</b><span>Air purification</span></div><button class="sw" role="switch" id="nanoe" aria-checked="false" aria-label="Clean air"></button></div>
-        <div class="toggle"><div><b>Unit display</b><span>Lights on the indoor unit</span></div><button class="sw" role="switch" id="disp" aria-checked="true" aria-label="Unit display"></button></div>
-      </div>
-      <p class="lbl sub"><span>Energy this week</span><span id="enTag" style="font-weight:500;color:var(--soft)">sample kWh</span></p>
-      <div id="energy"></div>
-    </div>
+  <section class="card sticker ctrl"><p class="lbl">Mode</p><div class="row cols4" id="modes"></div></section>
+
+  <section class="card sticker ctrl">
+    <p class="lbl"><span>Fan speed</span><b id="fanTxt">Auto</b></p>
+    <div class="row cols5" id="fans"></div>
+    <div class="row cols3" id="presets" style="margin-top:10px"></div>
   </section>
+
+  <section class="card sticker ctrl">
+    <p class="lbl"><span>Airflow direction</span><b id="swTxt">Auto</b></p>
+    <svg class="swingviz" id="swingviz" viewBox="0 0 300 64" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="row cols6" id="swing"></div>
+  </section>
+
+  <section class="card sticker ctrl">
+    <p class="lbl"><span>Converti capacity</span><b id="cnvTxt">Off</b></p>
+    <div class="scroll" id="cnv"></div>
+  </section>
+
+  <section class="card sticker ctrl"><p class="lbl">Scenes</p><div class="row cols3" id="scenes"></div></section>
+
+  <section class="card sticker ctrl">
+    <p class="lbl">Extras</p>
+    <div class="toggle"><div><b>nanoe clean air</b><span>Air purification</span></div><button class="sw" role="switch" id="nanoe" aria-checked="false" aria-label="Clean air"></button></div>
+    <div class="toggle"><div><b>Unit display</b><span>Lights on the indoor unit</span></div><button class="sw" role="switch" id="disp" aria-checked="true" aria-label="Unit display"></button></div>
+  </section>
+
+  <section class="card sticker">
+    <p class="lbl"><span>Energy this week</span><span id="enTag" style="font-weight:500;color:var(--soft)">sample kWh</span></p>
+    <div id="energy"></div>
+  </section>
+  </div>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -418,12 +428,6 @@ document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)r
 });
 $("nanoe").onclick=()=>{S.nanoe=!S.nanoe;render();send({acng:S.nanoe?"on":"off"})};
 $("disp").onclick=()=>{S.disp=!S.disp;render();send({acdc:S.disp?"on":"off"})};
-
-/* ---- tabs ---- */
-function showTab(t){document.querySelectorAll(".tabs [data-tab]").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
-  document.querySelectorAll(".pane").forEach(p=>p.hidden=p.dataset.pane!==t);try{localStorage.setItem("acTab",t)}catch(e){}}
-document.querySelectorAll(".tabs [data-tab]").forEach(b=>b.addEventListener("click",()=>{showTab(b.dataset.tab);buzz()}));
-try{const t=localStorage.getItem("acTab");if(t)showTab(t)}catch(e){}
 
 /* ---- energy ---- */
 function drawEnergy(vals,labels,sample){
