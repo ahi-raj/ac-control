@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px;-webkit-tap-highlight-color:transparent;user-select:none}input{user-select:text;-webkit-user-select:text}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Room AC Remote</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira:wght@200;300;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one-column cockpit — status line, hero tick-ring dial with airflow, then glass control bays. Deliberately dark-only. */
+:root{
+  color-scheme:dark;
+  --void:#05080d; --glass:rgba(140,190,255,.055); --glass-hi:rgba(140,190,255,.11);
+  --edge:rgba(160,205,255,.13); --ink:#e9f1fb; --dim:#7d8ea3; --faint:#3a4656;
+  --glow:#3fd0ff; --glow2:#6f7bff; --warn:#ffb35c; --bad:#ff6b7a; --good:#5cf2a0;
+  --display:"Saira",ui-sans-serif,system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+html,body{background:var(--void)}
+body{color:var(--ink);font-family:var(--display);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 36px;
+  background:radial-gradient(120% 60% at 50% 0%,color-mix(in srgb,var(--glow) 14%,transparent),transparent 60%),var(--void);
+  min-height:100%;transition:background .6s}
+.wrap{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.pill{font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;display:inline-flex;align-items:center;gap:7px;color:var(--dim)}
+.pill i{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
+.pill.demo{color:var(--warn)} .pill.live{color:var(--good)} .pill.wait{color:var(--warn)} .pill.wait i,.pill.demo i{animation:blink 1.6s infinite}
+.pill.down{color:var(--bad)}
+@keyframes blink{50%{opacity:.25}}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.link{background:none;border:0;color:var(--dim);font:500 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:6px 0}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+header h1{font-size:22px;font-weight:300;letter-spacing:.14em;text-transform:uppercase;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+header small{display:block;font:400 10.5px var(--mono);color:var(--dim);letter-spacing:.05em;margin-top:3px}
+header>div{min-width:0}
+.pwr{width:54px;height:54px;flex:none;border-radius:50%;border:1px solid var(--edge);background:var(--glass);color:var(--dim);cursor:pointer;display:grid;place-items:center;transition:.3s}
+.pwr svg{width:22px;height:22px}
+.on .pwr{color:var(--glow);border-color:var(--glow);box-shadow:0 0 0 4px color-mix(in srgb,var(--glow) 12%,transparent),0 0 24px -2px var(--glow),inset 0 0 14px -4px var(--glow)}
+.bay{background:linear-gradient(180deg,var(--glass-hi),var(--glass));border:1px solid var(--edge);border-radius:20px;padding:14px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.lbl{font:500 10px var(--mono);text-transform:uppercase;letter-spacing:.16em;color:var(--dim);margin:0 0 12px;display:flex;justify-content:space-between;gap:8px}
+.lbl b{color:var(--glow);font-weight:500}
+.hero{position:relative;display:grid;place-items:center;padding:4px 0 2px}
+#air{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.9}
+#dial{position:relative;width:100%;max-width:320px;touch-action:none;cursor:grab}
+.readout{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.modeTag{font:500 10px var(--mono);letter-spacing:.3em;color:var(--glow);text-transform:uppercase}
+.temp{font-size:92px;font-weight:200;line-height:.95;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+  background:linear-gradient(180deg,#fff 30%,color-mix(in srgb,var(--glow) 70%,#fff));-webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 40px color-mix(in srgb,var(--glow) 35%,transparent)}
+.temp sup{font-size:24px;font-weight:300;vertical-align:top;margin-left:4px}
+.room{font:400 11px var(--mono);color:var(--dim);margin-top:4px;letter-spacing:.04em}
+.off .temp{background:none;color:var(--faint);text-shadow:none}
+.off .modeTag{color:var(--faint)}
+.steps{display:flex;justify-content:space-between;align-items:center;margin-top:-4px;padding:0 6px;gap:8px}
+.round{width:50px;height:50px;flex:none;border-radius:16px;border:1px solid var(--edge);background:var(--glass);color:var(--ink);font:300 26px var(--display);cursor:pointer;transition:.15s}
+.round:active{transform:scale(.92);border-color:var(--glow);box-shadow:0 0 16px -4px var(--glow)}
+.stat{display:flex;gap:16px;font:400 10px var(--mono);color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
+.stat b{display:block;color:var(--ink);font:500 15px var(--display);letter-spacing:.02em;margin-top:2px}
+.row{display:grid;gap:8px}
+.cols3{grid-template-columns:repeat(3,1fr)} .cols4{grid-template-columns:repeat(4,1fr)} .cols6{grid-template-columns:repeat(6,1fr);gap:6px}
+.scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.scroll::-webkit-scrollbar{display:none}
+.scroll .chip{flex:none;min-width:58px}
+.chip{position:relative;border:1px solid var(--edge);background:rgba(255,255,255,.02);color:var(--dim);border-radius:14px;padding:11px 4px;
+  font:500 12px var(--display);letter-spacing:.06em;text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:.2s}
+.chip svg{width:20px;height:20px}
+.chip[aria-pressed="true"]{color:var(--ink);border-color:color-mix(in srgb,var(--glow) 70%,transparent);
+  background:color-mix(in srgb,var(--glow) 12%,transparent);box-shadow:0 0 18px -6px var(--glow),inset 0 0 12px -6px var(--glow)}
+.chip[aria-pressed="true"] svg{color:var(--glow);filter:drop-shadow(0 0 6px var(--glow))}
+.chip small{font:400 9.5px var(--mono);color:var(--dim);text-transform:none;letter-spacing:.02em}
+button:focus-visible,input:focus-visible{outline:1px solid var(--glow);outline-offset:3px}
+.fanwrap{display:grid;grid-template-columns:1fr 1.6fr;gap:10px;align-items:end}
+.fan{display:flex;align-items:flex-end;gap:7px;height:52px}
+.fan button{flex:1;border:1px solid var(--edge);border-radius:5px;background:rgba(255,255,255,.03);cursor:pointer;transition:.2s;position:relative}
+.fan button span{position:absolute;bottom:-17px;left:0;right:0;font:400 9px var(--mono);color:var(--dim)}
+.fan button.lit{background:linear-gradient(180deg,var(--glow),var(--glow2));border-color:transparent;box-shadow:0 0 14px -3px var(--glow)}
+.fanside{display:grid;gap:8px}
+.mt{margin-top:22px}
+.swingviz{display:block;width:100%;height:64px;margin-bottom:8px}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--edge)}
+.toggle:first-of-type{border-top:0;padding-top:0}
+.toggle b{font-weight:500;font-size:14px;letter-spacing:.03em} .toggle span{display:block;font:400 10.5px var(--mono);color:var(--dim);margin-top:2px}
+.sw{width:46px;height:24px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--edge);position:relative;cursor:pointer;flex:none;transition:.25s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--dim);transition:.25s}
+.sw[aria-checked="true"]{border-color:var(--glow);background:color-mix(in srgb,var(--glow) 20%,transparent)}
+.sw[aria-checked="true"]::after{left:25px;background:var(--glow);box-shadow:0 0 10px var(--glow)}
+.scene{align-items:flex-start;text-align:left;padding:12px;gap:4px}
+.scene b{font-size:13px;color:var(--ink);font-weight:500}
+.bars{display:flex;align-items:flex-end;gap:6px;height:76px;border-bottom:1px solid var(--edge);
+  background:repeating-linear-gradient(0deg,transparent 0 18px,rgba(160,205,255,.05) 18px 19px)}
+.bars div{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(180deg,color-mix(in srgb,var(--glow) 45%,transparent),transparent);min-height:2px}
+.bars div.now{background:linear-gradient(180deg,var(--glow),color-mix(in srgb,var(--glow2) 30%,transparent));box-shadow:0 0 14px -4px var(--glow)}
+.days{display:flex;gap:6px;font:400 9.5px var(--mono);color:var(--dim);margin-top:6px;font-variant-numeric:tabular-nums}.days span{flex:1;text-align:center;line-height:1.5}
+.empty{font:400 11px var(--mono);color:var(--dim);padding:20px 0;text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(16px);
+  background:rgba(10,16,24,.9);border:1px solid var(--glow);color:var(--ink);padding:9px 16px;border-radius:12px;font:500 11.5px var(--mono);letter-spacing:.06em;
+  opacity:0;transition:.25s;pointer-events:none;box-shadow:0 0 22px -6px var(--glow);backdrop-filter:blur(10px);max-width:calc(100% - 32px);text-align:center;z-index:30}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.toast.err{border-color:var(--bad);box-shadow:0 0 22px -6px var(--bad)}
+.off .ctrl{opacity:.35;pointer-events:none;filter:saturate(.3)}
+/* sign-in */
+.gate{position:fixed;inset:0;z-index:20;background:radial-gradient(90% 50% at 50% 10%,rgba(63,208,255,.16),transparent 70%),var(--void);
+  display:flex;align-items:center;justify-content:center;
+  padding:calc(24px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
+.gate form{width:100%;max-width:360px;display:flex;flex-direction:column;gap:12px}
+.gate h2{font-size:30px;font-weight:200;letter-spacing:.18em;text-transform:uppercase;margin:0}
+.gate p{font:400 11.5px var(--mono);color:var(--dim);line-height:1.6;margin:0}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font:500 10px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.field input{background:rgba(255,255,255,.04);border:1px solid var(--edge);border-radius:12px;padding:13px 14px;color:var(--ink);font:400 16px var(--display);letter-spacing:.02em}
+.field input:focus{border-color:var(--glow);outline:none;box-shadow:0 0 16px -6px var(--glow)}
+.cta{margin-top:6px;border:1px solid var(--glow);background:color-mix(in srgb,var(--glow) 16%,transparent);color:var(--ink);border-radius:14px;padding:14px;
+  font:500 14px var(--display);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 24px -8px var(--glow)}
+.cta:disabled{opacity:.5}
+.msg{font:500 11px var(--mono);color:var(--bad);min-height:14px}
+.fine{font:400 10px var(--mono);color:var(--faint);line-height:1.6}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head><body>
+
+<div class="gate" id="gate" hidden>
+  <form id="loginForm" autocomplete="on">
+    <h2>AC Control</h2>
+    <p>Sign in with your <b>MirAIe</b> account (the one in the Panasonic app).</p>
+    <div class="field"><label for="u">Email or mobile</label><input id="u" name="username" autocomplete="username" inputmode="email" required></div>
+    <div class="field"><label for="p">Password</label><input id="p" name="password" type="password" autocomplete="current-password" required></div>
+    <div class="msg" id="msg"></div>
+    <button class="cta" id="go" type="submit">Connect</button>
+    <button class="link" type="button" id="tryDemo">Try demo instead</button>
+    <p class="fine">Your login stays encrypted on this phone and is sent only to MirAIe. Unofficial app — it uses the same cloud as the Panasonic app.</p>
+  </form>
+</div>
+
+<div class="wrap on" id="app">
+  <div class="topline"><span class="pill demo" id="pill"><i></i><span id="pillTxt">Demo mode</span></span><button class="link" id="signout" hidden>Sign out</button></div>
+
+  <header>
+    <div><h1 id="devName">Bedroom</h1><small id="devSub">PANASONIC SU18BKY3W · 1.5T INVERTER</small></div>
+    <button class="pwr" id="pwr" aria-label="Power"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 7a8 8 0 1 0 11.4 0"/></svg></button>
+  </header>
+  <div class="scroll" id="devPick" hidden></div>
+
+  <section class="bay">
+    <div class="hero">
+      <canvas id="air"></canvas>
+      <svg id="dial" viewBox="0 0 320 290" aria-label="Temperature dial">
+        <defs>
+          <linearGradient id="g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="var(--glow2)"/><stop offset="1" stop-color="var(--glow)"/></linearGradient>
+          <filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+        </defs>
+        <g id="ticks"></g>
+        <path id="arcGlow" fill="none" stroke="url(#g)" stroke-width="5" stroke-linecap="round" filter="url(#blur)" opacity=".8"/>
+        <path id="arc" fill="none" stroke="url(#g)" stroke-width="2.5" stroke-linecap="round"/>
+        <circle id="halo" r="16" fill="var(--glow)" opacity=".18"/>
+        <circle id="knob" r="7" fill="#fff" stroke="var(--glow)" stroke-width="3"/>
+        <text x="58" y="282" fill="var(--dim)" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="1">16°</text>
+        <text x="244" y="282" fill="var(--dim)" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="1">30°</text>
+      </svg>
+      <div class="readout"><div class="modeTag" id="modeTag">Cool</div><div class="temp" id="temp">24<sup>°C</sup></div><div class="room" id="room">ROOM --</div></div>
+    </div>
+    <div class="steps ctrl">
+      <button class="round" id="minus" aria-label="Lower temperature">−</button>
+      <div class="stat"><div>Fan<b id="sFan">Auto</b></div><div>Swing<b id="sSw">Auto</b></div><div>Status<b id="sAct">—</b></div></div>
+      <button class="round" id="plus" aria-label="Raise temperature">+</button>
+    </div>
+  </section>
+
+  <section class="bay ctrl"><p class="lbl">Mode</p><div class="row cols4" id="modes"></div></section>
+
+  <section class="bay ctrl">
+    <p class="lbl"><span>Fan speed</span><b id="fanTxt">Auto</b></p>
+    <div class="fanwrap">
+      <div class="fanside"><button class="chip" data-fan="auto">Auto</button><button class="chip" data-fan="quiet">Quiet</button></div>
+      <div class="fan" id="fan">
+        <button data-fan="low" aria-label="Fan low" style="height:45%"><span>LOW</span></button>
+        <button data-fan="medium" aria-label="Fan medium" style="height:70%"><span>MED</span></button>
+        <button data-fan="high" aria-label="Fan high" style="height:100%"><span>HIGH</span></button>
+      </div>
+    </div>
+    <div class="row cols3 mt" id="presets"></div>
+  </section>
+
+  <section class="bay ctrl">
+    <p class="lbl"><span>Airflow direction</span><b id="swTxt">Auto</b></p>
+    <svg class="swingviz" id="swingviz" viewBox="0 0 300 64" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="row cols6" id="swing"></div>
+  </section>
+
+  <section class="bay ctrl">
+    <p class="lbl"><span>Converti capacity</span><b id="cnvTxt">Off</b></p>
+    <div class="scroll" id="cnv"></div>
+  </section>
+
+  <section class="bay ctrl"><p class="lbl">Scenes</p><div class="row cols3" id="scenes"></div></section>
+
+  <section class="bay ctrl">
+    <p class="lbl">Systems</p>
+    <div class="toggle"><div><b>nanoe / clean air</b><span>Air purification</span></div><button class="sw" role="switch" id="nanoe" aria-checked="false" aria-label="Clean air"></button></div>
+    <div class="toggle"><div><b>Unit display</b><span>Indoor LEDs</span></div><button class="sw" role="switch" id="disp" aria-checked="true" aria-label="Unit display"></button></div>
+  </section>
+
+  <section class="bay">
+    <p class="lbl"><span>Energy · 7 days</span><span id="enTag">sample kWh</span></p>
+    <div id="energy"></div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const NATIVE=typeof window.Native!=="undefined";
+let demo=!NATIVE;
+const S={on:true,set:24,room:29,mode:"cool",fan:"auto",preset:"none",swing:0,cnv:0,nanoe:false,disp:true,online:true};
+const $=id=>document.getElementById(id);
+let devices=[],devId=null,fw="";
+const toast=(t,err)=>{const el=$("toast");el.textContent=t;el.classList.toggle("err",!!err);el.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(()=>el.classList.remove("show"),err?3200:1400)};
+const buzz=()=>{try{navigator.vibrate&&navigator.vibrate(6)}catch(e){}};
+const ico={
+ cool:'<path d="M12 2v20M4 6l16 12M20 6L4 18M9 3.5l3 2 3-2M9 20.5l3-2 3 2"/>',
+ dry:'<path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/>',
+ fan:'<circle cx="12" cy="12" r="1.6"/><path d="M12 10.4c0-5 4-7 6-5s-1 6-4.4 6.6M13.6 12c5 0 7 4 5 6s-6-1-6.6-4.4M12 13.6c0 5-4 7-6 5s1-6 4.4-6.6M10.4 12c-5 0-7-4-5-6s6 1 6.6 4.4"/>',
+ auto:'<path d="M5 19l7-15 7 15M8 13h8"/>'};
+const MODES={cool:["Cool","#3fd0ff","#6f7bff"],dry:["Dry","#ffc46b","#ff7a59"],fan:["Fan","#5cf2c3","#3fa9ff"],auto:["Auto","#c38bff","#5d7bff"]};
+const FANS={auto:"Auto",quiet:"Quiet",low:"Low",medium:"Med",high:"High"};
+const CNV=[[0,"Off"],[40,"40%"],[50,"50%"],[55,"55%"],[60,"60%"],[70,"70%"],[80,"80%"],[90,"90%"],[100,"100%"],[110,"110%"]];
+
+/* ---- sending ---- */
+function send(cmd,label){
+  if(demo){if(label)toast(label);return}
+  try{Native.send(JSON.stringify(Object.assign({deviceId:devId},cmd)))}catch(e){toast("Could not send",true)}
+  if(label)toast(label);
+}
+const PRESET={none:{acem:"off",acpm:"off",acec:"off",cnv:0},eco:{acem:"on",acpm:"off",acec:"off",actmp:26,cnv:0},boost:{acem:"off",acpm:"on",acec:"off",cnv:0}};
+
+/* ---- dial geometry (240° sweep) ---- */
+const CX=160,CY=150,R=118,A0=150,A1=390,MIN=16,MAX=30,NT=57;
+const pt=(a,r=R)=>[CX+r*Math.cos(a*Math.PI/180),CY+r*Math.sin(a*Math.PI/180)];
+const arcPath=(a,b)=>{const[x0,y0]=pt(a),[x1,y1]=pt(b);return`M${x0} ${y0}A${R} ${R} 0 ${b-a>180?1:0} 1 ${x1} ${y1}`};
+let tk="";for(let i=0;i<NT;i++){const a=A0+i*(A1-A0)/(NT-1),maj=i%4===0,[x0,y0]=pt(a,R+12),[x1,y1]=pt(a,R+(maj?24:19));
+  tk+=`<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke-width="${maj?2:1.2}" stroke-linecap="round"/>`}
+$("ticks").innerHTML=tk;const ticks=[...$("ticks").children];
+
+function render(){
+  const app=$("app");app.classList.toggle("on",S.on);app.classList.toggle("off",!S.on);
+  const m=MODES[S.mode]||MODES.cool,rs=document.documentElement.style;rs.setProperty("--glow",m[1]);rs.setProperty("--glow2",m[2]);
+  const f=(S.set-MIN)/(MAX-MIN),a=A0+f*(A1-A0);
+  ["arc","arcGlow"].forEach(id=>{$(id).setAttribute("d",arcPath(A0,Math.max(a,A0+.01)));$(id).style.opacity=S.on?(id==="arc"?1:.8):.08});
+  const[kx,ky]=pt(a);["knob","halo"].forEach(id=>{$(id).setAttribute("cx",kx);$(id).setAttribute("cy",ky);$(id).style.opacity=S.on?"":".2"});
+  const lit=Math.round(f*(NT-1));ticks.forEach((t,i)=>{t.setAttribute("stroke",S.on&&i<=lit?"var(--glow)":"var(--faint)");t.style.opacity=S.on&&i<=lit?.35+.65*(i/(lit||1)):.7});
+  $("temp").innerHTML=(S.mode==="fan"?"--":S.set)+"<sup>°C</sup>";
+  $("modeTag").textContent=!S.online?"Offline":S.on?m[0]:"Standby";
+  const act=!S.on?"Off":S.mode==="fan"?"Circulate":S.room!=null&&Math.abs(S.room-S.set)<.4?"Holding":S.mode==="dry"?"Drying":"Cooling";
+  $("room").textContent=S.room!=null?`ROOM ${(+S.room).toFixed(1)}°`:"ROOM --";
+  $("sAct").textContent=act;$("sFan").textContent=S.preset==="boost"?"Power":FANS[S.fan]||"Auto";$("sSw").textContent=S.swing?"P"+S.swing:"Auto";
+  $("modes").innerHTML=Object.entries(MODES).map(([k,v])=>`<button class="chip" data-m="${k}" aria-pressed="${S.mode===k}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ico[k]}</svg>${v[0]}</button>`).join("");
+  const lv={low:1,medium:2,high:3}[S.fan]||0;
+  [...$("fan").children].forEach((b,i)=>b.classList.toggle("lit",i<lv));
+  document.querySelectorAll(".fanside [data-fan]").forEach(b=>b.setAttribute("aria-pressed",S.fan===b.dataset.fan));
+  $("fanTxt").textContent=FANS[S.fan]||"Auto";
+  $("presets").innerHTML=[["none","Normal"],["eco","Eco"],["boost","Powerful"]].map(([k,n])=>`<button class="chip" data-p="${k}" aria-pressed="${S.preset===k}">${n}</button>`).join("");
+  $("swing").innerHTML=["A","1","2","3","4","5"].map((n,i)=>`<button class="chip" data-s="${i}" aria-pressed="${S.swing===i}" aria-label="${i?"Position "+i:"Auto swing"}">${n}</button>`).join("");
+  $("swTxt").textContent=S.swing?`Position ${S.swing}`:"Auto sweep";
+  $("cnv").innerHTML=CNV.map(([v,n])=>`<button class="chip" data-c="${v}" aria-pressed="${S.cnv===v}">${n}</button>`).join("");
+  $("cnvTxt").textContent=(CNV.find(c=>c[0]===S.cnv)||[0,"Off"])[1];
+  $("nanoe").setAttribute("aria-checked",S.nanoe);$("disp").setAttribute("aria-checked",S.disp);
+  drawSwing();
+}
+function drawSwing(){
+  const angs=[[6,54],[6,6],[17,17],[28,28],[40,40],[52,52]][S.swing]||[6,54];let s=`<rect x="6" y="6" width="54" height="8" rx="4" fill="none" stroke="var(--edge)"/>`;
+  for(let d=6;d<=54;d+=4){const on=d>=angs[0]&&d<=angs[1],r=d*Math.PI/180;
+    s+=`<line x1="40" y1="14" x2="${40+270*Math.cos(r)}" y2="${14+270*Math.sin(r)}" stroke="${on?"var(--glow)":"var(--faint)"}" stroke-width="${on?1.6:.6}" opacity="${on?.85:.5}"/>`}
+  $("swingviz").innerHTML=s;
+}
+let tTimer;function setTemp(t,commit){t=Math.max(MIN,Math.min(MAX,Math.round(t)));if(t!==S.set){S.set=t;render();buzz()}
+  if(commit){clearTimeout(tTimer);tTimer=setTimeout(()=>send({actmp:String(S.set)},`TARGET ${S.set}°C`),450)}}
+
+const dial=$("dial");let drag=false;
+function fromEvent(e){const r=dial.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*320,y=(e.clientY-r.top)/r.height*290;
+  let a=Math.atan2(y-CY,x-CX)*180/Math.PI;if(a<90)a+=360;a=Math.max(A0,Math.min(A1,a));return MIN+(a-A0)/(A1-A0)*(MAX-MIN)}
+dial.addEventListener("pointerdown",e=>{if(!S.on||S.mode==="fan")return;drag=true;dial.setPointerCapture(e.pointerId);setTemp(fromEvent(e))});
+dial.addEventListener("pointermove",e=>{if(drag)setTemp(fromEvent(e))});
+dial.addEventListener("pointerup",()=>{if(drag){drag=false;setTemp(S.set,true)}});
+$("plus").onclick=()=>setTemp(S.set+1,true);$("minus").onclick=()=>setTemp(S.set-1,true);
+$("pwr").onclick=()=>{S.on=!S.on;render();send({ps:S.on?"on":"off"},S.on?"SYSTEM ONLINE":"STANDBY")};
+
+const SCENES=[
+ ["Quick chill","20° · powerful",()=>{Object.assign(S,{on:true,mode:"cool",set:20,preset:"boost"});return{ps:"on",acmd:"cool",actmp:"20",...PRESET.boost}}],
+ ["Night","26° · quiet · dark",()=>{Object.assign(S,{on:true,mode:"cool",set:26,fan:"quiet",preset:"none",swing:1,disp:false});return{ps:"on",acmd:"cool",actmp:"26",acfs:"quiet",acvs:1,acdc:"off"}}],
+ ["Focus","24° · auto",()=>{Object.assign(S,{on:true,mode:"cool",set:24,fan:"auto",preset:"none",swing:0});return{ps:"on",acmd:"cool",actmp:"24",acfs:"auto",acvs:0,acem:"off",acpm:"off"}}]];
+$("scenes").innerHTML=SCENES.map((s,i)=>`<button class="chip scene" data-sc="${i}"><b>${s[0]}</b><small>${s[1]}</small></button>`).join("");
+
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+  if(d.m){S.mode=d.m;render();send({acmd:d.m},`MODE · ${MODES[d.m][0].toUpperCase()}`)}
+  else if(d.fan){S.fan=d.fan;const cmd={acfs:d.fan};if(S.preset==="boost"){S.preset="none";Object.assign(cmd,{acpm:"off"})}render();send(cmd,`FAN · ${FANS[d.fan].toUpperCase()}`)}
+  else if(d.p){S.preset=d.p;S.cnv=0;if(d.p==="eco")S.set=26;render();send(PRESET[d.p],d.p==="none"?"NORMAL":d.p==="eco"?"ECO · 26°C":"POWERFUL")}
+  else if(d.s){S.swing=+d.s;render();send({acvs:+d.s})}
+  else if(d.c!==undefined){S.cnv=+d.c;S.preset="none";render();send({acem:"off",acpm:"off",cnv:+d.c},`CONVERTI · ${(CNV.find(c=>c[0]===+d.c)||[0,"OFF"])[1]}`)}
+  else if(d.sc){const cmd=SCENES[+d.sc][2]();render();send(cmd,`SCENE · ${SCENES[+d.sc][0].toUpperCase()}`)}
+  else if(d.dev){pickDevice(d.dev)}
+});
+$("nanoe").onclick=()=>{S.nanoe=!S.nanoe;render();send({acng:S.nanoe?"on":"off"})};
+$("disp").onclick=()=>{S.disp=!S.disp;render();send({acdc:S.disp?"on":"off"})};
+
+/* ---- energy ---- */
+function drawEnergy(vals,labels,sample){
+  $("enTag").textContent=sample?"sample kWh":"kWh";
+  if(!vals.length){$("energy").innerHTML='<div class="empty">No energy data yet</div>';return}
+  const mx=Math.max(...vals,0.1);
+  $("energy").innerHTML=`<div class="bars">${vals.map((v,i)=>`<div class="${i===vals.length-1?"now":""}" style="height:${v/mx*100}%" title="${v} kWh"></div>`).join("")}</div>
+  <div class="days">${vals.map((v,i)=>`<span>${labels[i]}<br>${(+v).toFixed(1)}</span>`).join("")}</div>`;
+}
+
+/* ---- status from MirAIe ---- */
+function roomTemp(v){
+  if(v==null||v==="")return null;const parts=(fw||"").replace(/[^\d.]/g,"").split(".");
+  const packed=parts.length>=2&&(+parts[0]>3||(+parts[0]===3&&+parts[1]>=2));
+  if(packed&&String(v).includes(".")){const[p,t]=String(v).split(".");if(+t<=0)return null;return Math.round((+t+(+p)/256)*100)/100}
+  const n=parseFloat(v);return isNaN(n)?null:n;
+}
+function applyStatus(s){
+  if(s.ps!==undefined)S.on=s.ps==="on";
+  if(s.actmp!==undefined&&!drag){const t=parseFloat(s.actmp);if(!isNaN(t))S.set=Math.round(t)}
+  if(s.rmtmp!==undefined){const r=roomTemp(s.rmtmp);if(r!=null)S.room=r}
+  if(s.acmd!==undefined&&MODES[s.acmd])S.mode=s.acmd;
+  if(s.acfs!==undefined&&FANS[s.acfs])S.fan=s.acfs;
+  if(s.acvs!==undefined)S.swing=+s.acvs||0;
+  if(s.acdc!==undefined)S.disp=s.acdc==="on";
+  if(s.acpm!==undefined||s.acem!==undefined)S.preset=s.acpm==="on"?"boost":s.acem==="on"?"eco":"none";
+  if(s.cnv!==undefined)S.cnv=+s.cnv||0;
+  const ng=s.acngs!==undefined?s.acngs:s.acng;if(ng!==undefined)S.nanoe=ng==="on";
+  if(s.onlineStatus!==undefined)S.online=s.onlineStatus==="true";
+  render();
+}
+function setPill(cls,txt){$("pill").className="pill "+cls;$("pillTxt").textContent=txt}
+function pickDevice(id){
+  const d=devices.find(x=>x.id===id)||devices[0];if(!d)return;devId=d.id;fw=d.fw||"";
+  $("devName").textContent=d.name;$("devSub").textContent=(d.model||"PANASONIC MIRAIE").toUpperCase();
+  $("devPick").hidden=devices.length<2;
+  $("devPick").innerHTML=devices.map(x=>`<button class="chip" data-dev="${x.id}" aria-pressed="${x.id===devId}">${x.name}</button>`).join("");
+  if(NATIVE){Native.refresh();Native.energy(devId)}
+}
+const DAYN=["SUN","MON","TUE","WED","THU","FRI","SAT"];
+window.onNative=(ev,data)=>{
+  if(ev==="phase"){setPill("wait",data)}
+  else if(ev==="error"){toast(data,true);if(!$("gate").hidden){$("msg").textContent=data;$("go").disabled=false;$("go").textContent="Connect"}else setPill("down","Connection issue")}
+  else if(ev==="devices"){devices=data;$("gate").hidden=true;demo=false;$("signout").hidden=false;pickDevice(devices[0]&&devices[0].id)}
+  else if(ev==="status"){if(!devId||data.deviceId===devId)applyStatus(data)}
+  else if(ev==="online"){if(data.deviceId===devId){S.online=data.onlineStatus==="true";render();if(!S.online)setPill("down","AC offline")}}
+  else if(ev==="conn"){data?setPill("live","Live"):setPill("wait","Reconnecting")}
+  else if(ev==="energy"){if(data.deviceId!==devId)return;const days=(data.days||[]).slice(-7);
+    drawEnergy(days.map(x=>+x.power||0),days.map(x=>{const k=String(x.day||"");return k.length===8?DAYN[new Date(+k.slice(4),+k.slice(2,4)-1,+k.slice(0,2)).getDay()]:k}),false)}
+  else if(ev==="loggedOut"){showGate()}
+};
+function showGate(){$("gate").hidden=false;$("go").disabled=false;$("go").textContent="Connect";$("msg").textContent="";$("signout").hidden=true}
+$("loginForm").addEventListener("submit",e=>{e.preventDefault();if(!NATIVE)return;
+  $("msg").textContent="";$("go").disabled=true;$("go").textContent="Connecting…";Native.login($("u").value.trim(),$("p").value)});
+$("tryDemo").onclick=()=>{demo=true;$("gate").hidden=true;setPill("demo","Demo mode");startDemo()};
+$("signout").onclick=()=>{if(NATIVE)Native.logout()};
+
+/* ---- demo ---- */
+function startDemo(){
+  drawEnergy([3.1,2.6,3.8,4.2,2.9,3.5,1.4],["SAT","SUN","MON","TUE","WED","THU","FRI"],true);
+  S.room=29;render();
+  clearInterval(startDemo.h);startDemo.h=setInterval(()=>{if(!demo)return;const tgt=S.on&&S.mode!=="fan"?S.set:30.5;S.room+=(tgt-S.room)*(S.preset==="boost"?.06:.025);render()},2000);
+}
+
+/* ---- ambient airflow ---- */
+const cv=$("air"),cx=cv.getContext("2d"),reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;let P=[];
+function size(){const r=cv.getBoundingClientRect(),d=devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;cx.setTransform(d,0,0,d,0,0)}
+size();addEventListener("resize",size);
+for(let i=0;i<46;i++)P.push({x:Math.random(),y:Math.random(),v:.4+Math.random(),l:10+Math.random()*30});
+function frame(){const w=cv.width/(devicePixelRatio||1),h=cv.height/(devicePixelRatio||1);cx.clearRect(0,0,w,h);
+  if(S.on&&S.online){const col=getComputedStyle(document.documentElement).getPropertyValue("--glow").trim()||"#3fd0ff";
+    const sp=S.preset==="boost"?2.2:{quiet:.45,low:.6,medium:1,high:1.5,auto:1}[S.fan]||1;cx.lineCap="round";
+    P.forEach(p=>{p.x+=.0016*p.v*sp;if(p.x>1.1){p.x=-.1;p.y=Math.random()}
+      const X=p.x*w,Y=p.y*h+Math.sin(p.x*6+p.y*10)*6,g=cx.createLinearGradient(X-p.l,Y,X,Y);
+      g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(1,col);cx.strokeStyle=g;cx.globalAlpha=.22;cx.lineWidth=1;
+      cx.beginPath();cx.moveTo(X-p.l,Y);cx.lineTo(X,Y);cx.stroke()});cx.globalAlpha=1}
+  if(!reduce)requestAnimationFrame(frame)}
+frame();
+
+/* ---- boot ---- */
+render();
+if(NATIVE){
+  drawEnergy([],[],false);
+  if(Native.hasSaved()){setPill("wait","Signing in");Native.resume()}else showGate();
+  setInterval(()=>{if(!demo&&devId)Native.energy(devId)},30*60*1000);
+}else{setPill("demo","Demo mode · not linked to your AC");startDemo()}
+</script>
+</body></html>
