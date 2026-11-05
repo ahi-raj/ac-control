@@ -16,7 +16,7 @@ class MainActivity : Activity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val bg = Color.parseColor("#F4F0FB")
+        val bg = Color.parseColor("#BCD7EE")
         window.statusBarColor = bg
         window.navigationBarColor = bg
         @Suppress("DEPRECATION")
