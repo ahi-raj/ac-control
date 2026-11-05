@@ -20,23 +20,23 @@ html,body{background:#cfe7a0}
 body{color:var(--ink);font-family:var(--display);
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 40px}
 #world{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.wrap{position:relative;z-index:1;max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.wrap{position:relative;z-index:1;max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
 button{font-family:inherit;color:var(--ink)}
 button:focus-visible,input:focus-visible{outline:3px dashed var(--ink);outline-offset:3px}
 .sticker{background:var(--paper);border:2px solid var(--ink);box-shadow:0 3px 0 var(--ink)}
 .topline{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.pill{font:600 12px var(--display);display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:99px}
+.pill{font:600 11px var(--display);display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:99px;border:1.5px solid var(--ink);background:var(--paper-solid)}
 .pill i{width:8px;height:8px;border-radius:50%;background:currentColor;border:1.5px solid var(--ink)}
 .pill.demo{color:#c47a12} .pill.live{color:var(--good)} .pill.wait{color:#c47a12} .pill.down{color:var(--bad)}
 .pill.wait i,.pill.demo i{animation:blink 1.4s infinite}
 .pill span{color:var(--ink)}
 @keyframes blink{50%{opacity:.3}}
 .link{font:600 12px var(--display);cursor:pointer;padding:5px 12px;border-radius:99px}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 10px 10px 16px;border-radius:24px 20px 26px 18px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 8px 8px 14px;border-radius:24px 20px 26px 18px}header>div{display:flex;align-items:center;gap:8px;flex-wrap:wrap}header #signout{margin-left:auto;box-shadow:none;border:0;background:none}
 header>div{min-width:0}
-header h1{font:700 24px var(--display);margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+header h1{font:700 21px var(--display);margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
-.pwr{width:56px;height:56px;flex:none;border-radius:50%;border:2px solid var(--ink);background:var(--paper-solid);cursor:pointer;display:grid;place-items:center;
+.pwr{width:48px;height:48px;flex:none;border-radius:50%;border:2px solid var(--ink);background:var(--paper-solid);cursor:pointer;display:grid;place-items:center;
   box-shadow:0 3px 0 var(--ink);transition:transform .12s,background .3s}
 .pwr svg{width:24px;height:24px}
 .pwr:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
@@ -49,7 +49,7 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
 .lbl{font:600 14px var(--display);margin:0 0 12px;display:flex;justify-content:space-between;gap:8px}
 .lbl b{font:700 18px var(--hand);color:var(--accent);line-height:1}
 /* ---------- hero: Mochi on the meadow ---------- */
-.hero{position:relative;aspect-ratio:360/250;max-width:100%;margin:-4px 0 -6px}
+.hero{position:relative;aspect-ratio:360/250;width:min(100%,330px);max-width:100%;margin:-6px auto -10px}
 .hero svg,.hero canvas{position:absolute;inset:0;width:100%;height:100%}
 .hero canvas{pointer-events:none}
 .chips{position:absolute;bottom:4px;left:0;display:flex;gap:6px;z-index:2}
@@ -90,12 +90,12 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
 .blink{animation:eyeblink 4s infinite;transform-box:fill-box;transform-origin:center}
 @keyframes eyeblink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
 /* ---------- temperature ---------- */
-.tempcard{display:flex;flex-direction:column;gap:12px}
-.mood{font:700 21px var(--hand);text-align:center;min-height:22px;line-height:1.1}
+.tempcard{display:flex;flex-direction:column;gap:10px;padding:12px 14px}.trow1{display:flex;align-items:center;justify-content:space-between;gap:10px}.trow1 .mood{text-align:left;flex:1;min-width:0}.trow .track{flex:1}
+.mood{font:700 20px var(--hand);text-align:center;min-height:22px;line-height:1.1}
 .trow{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.big{font:700 62px var(--display);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;transition:color .4s}
+.big{font:700 46px var(--display);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;transition:color .4s}
 .big sup{font-size:22px;font-weight:600;vertical-align:top;margin-left:2px;color:var(--soft)}
-.bump{width:54px;height:54px;flex:none;border-radius:50%;border:2px solid var(--ink);background:var(--accent-soft);font:600 30px var(--display);cursor:pointer;box-shadow:0 3px 0 var(--ink);transition:transform .12s}
+.bump{width:44px;height:44px;flex:none;border-radius:50%;border:2px solid var(--ink);background:var(--accent-soft);font:600 26px var(--display);cursor:pointer;box-shadow:0 3px 0 var(--ink);transition:transform .12s}
 .bump:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
 .track{position:relative;height:34px;border-radius:99px;border:2px solid var(--ink);touch-action:none;cursor:pointer;
   background:linear-gradient(90deg,#bfe0ff,#e7f3ff 22%,#d6ecaa 50%,#fff0b3 74%,#ffc79c)}
@@ -104,7 +104,15 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
 .knob svg{width:24px;height:24px}
 .dragging .knob{transform:scale(1.15) rotate(-8deg)}
 .ends{display:flex;justify-content:space-between;font:700 16px var(--hand);color:var(--soft)}
-.off .ctrl,.off .ctrlx{pointer-events:none}.off .ctrl>*,.off .ctrlx{opacity:.45;filter:grayscale(.6)}
+.off .ctrl,.off .ctrlx{pointer-events:none}.off .ctrl>*,.off .ctrlx{opacity:.45;filter:grayscale(.6)}.off .tabs{opacity:1}
+/* ---------- tabs ---------- */
+.panel{padding:12px 14px 14px}.tempcard::after{left:16px;right:auto}.panel::after{left:auto!important;right:18px!important}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px;padding:4px;border:2px solid var(--ink);border-radius:16px;background:#f3ead8}
+.tabs button{border:0;background:none;border-radius:11px;padding:8px 2px;font:600 14px var(--display);cursor:pointer;transition:background .2s}
+.tabs button[aria-selected="true"]{background:var(--paper-solid);box-shadow:0 0 0 2px var(--ink),0 2px 0 2px var(--ink)}
+.lbl.sub{margin:14px 0 10px}
+.pane{animation:pop .25s cubic-bezier(.3,1.5,.5,1)}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}}
 /* ---------- chips ---------- */
 .row{display:grid;gap:9px}
 .cols3{grid-template-columns:repeat(3,1fr)} .cols4{grid-template-columns:repeat(4,1fr)} .cols5{grid-template-columns:repeat(5,1fr);gap:7px} .cols6{grid-template-columns:repeat(6,1fr);gap:6px}
@@ -178,12 +186,12 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
 </div>
 
 <div class="wrap on" id="app">
-  <div class="topline"><span class="pill sticker demo" id="pill"><i></i><span id="pillTxt">Demo mode</span></span><button class="link sticker" id="signout" hidden>Sign out</button></div>
-
   <header class="sticker">
-    <div><h1 id="devName">Bedroom</h1><small id="devSub">Panasonic SU18BKY3W · 1.5 T inverter</small></div>
+    <div><h1 id="devName">Bedroom</h1><span class="pill demo" id="pill"><i></i><span id="pillTxt">Demo mode</span></span></div>
+    <button class="link" id="signout" hidden>Sign out</button>
     <button class="pwr" id="pwr" aria-label="Power"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 7a8 8 0 1 0 11.4 0"/></svg></button>
   </header>
+  <small id="devSub" hidden>Panasonic SU18BKY3W</small>
   <div class="scroll" id="devPick" hidden></div>
 
   <section class="hero" id="stage">
@@ -235,49 +243,47 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
   </section>
 
   <section class="card sticker tempcard">
-    <div class="mood" id="mood">Just right!</div>
+    <div class="trow1"><div class="mood" id="mood">Just right!</div><div class="big" id="temp">24<sup>°C</sup></div></div>
     <div class="trow ctrlx">
       <button class="bump" id="minus" aria-label="Colder">−</button>
-      <div class="big" id="temp">24<sup>°C</sup></div>
-      <button class="bump" id="plus" aria-label="Warmer">+</button>
-    </div>
-    <div class="ctrlx">
       <div class="track" id="track" role="slider" aria-label="Temperature" aria-valuemin="16" aria-valuemax="30" tabindex="0">
         <div class="knob" id="knob"><svg id="knobIco" viewBox="0 0 24 24" fill="none" stroke="#3d3229" stroke-width="2.2" stroke-linecap="round"></svg></div></div>
-      <div class="ends" style="margin-top:6px"><span>16° brrr</span><span>30° toasty</span></div>
+      <button class="bump" id="plus" aria-label="Warmer">+</button>
     </div>
   </section>
 
-  <section class="card sticker ctrl"><p class="lbl">Mode</p><div class="row cols4" id="modes"></div></section>
-
-  <section class="card sticker ctrl">
-    <p class="lbl"><span>Fan speed</span><b id="fanTxt">Auto</b></p>
-    <div class="row cols5" id="fans"></div>
-    <div class="row cols3" id="presets" style="margin-top:10px"></div>
-  </section>
-
-  <section class="card sticker ctrl">
-    <p class="lbl"><span>Airflow direction</span><b id="swTxt">Auto</b></p>
-    <svg class="swingviz" id="swingviz" viewBox="0 0 300 64" preserveAspectRatio="xMidYMid meet"></svg>
-    <div class="row cols6" id="swing"></div>
-  </section>
-
-  <section class="card sticker ctrl">
-    <p class="lbl"><span>Converti capacity</span><b id="cnvTxt">Off</b></p>
-    <div class="scroll" id="cnv"></div>
-  </section>
-
-  <section class="card sticker ctrl"><p class="lbl">Scenes</p><div class="row cols3" id="scenes"></div></section>
-
-  <section class="card sticker ctrl">
-    <p class="lbl">Extras</p>
-    <div class="toggle"><div><b>nanoe clean air</b><span>Air purification</span></div><button class="sw" role="switch" id="nanoe" aria-checked="false" aria-label="Clean air"></button></div>
-    <div class="toggle"><div><b>Unit display</b><span>Lights on the indoor unit</span></div><button class="sw" role="switch" id="disp" aria-checked="true" aria-label="Unit display"></button></div>
-  </section>
-
-  <section class="card sticker">
-    <p class="lbl"><span>Energy this week</span><span id="enTag" style="font-weight:500;color:var(--soft)">sample kWh</span></p>
-    <div id="energy"></div>
+  <section class="card sticker panel">
+    <div class="tabs" role="tablist">
+      <button role="tab" data-tab="mode" aria-selected="true">Mode</button>
+      <button role="tab" data-tab="fan" aria-selected="false">Fan</button>
+      <button role="tab" data-tab="air" aria-selected="false">Air</button>
+      <button role="tab" data-tab="more" aria-selected="false">More</button>
+    </div>
+    <div class="pane ctrl" data-pane="mode">
+      <div class="row cols4" id="modes"></div>
+      <p class="lbl sub">Scenes</p>
+      <div class="row cols3" id="scenes"></div>
+    </div>
+    <div class="pane ctrl" data-pane="fan" hidden>
+      <p class="lbl"><span>Fan speed</span><b id="fanTxt">Auto</b></p>
+      <div class="row cols5" id="fans"></div>
+      <div class="row cols3" id="presets" style="margin-top:10px"></div>
+    </div>
+    <div class="pane ctrl" data-pane="air" hidden>
+      <p class="lbl"><span>Airflow direction</span><b id="swTxt">Auto</b></p>
+      <svg class="swingviz" id="swingviz" viewBox="0 0 300 64" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="row cols6" id="swing"></div>
+      <p class="lbl sub"><span>Converti capacity</span><b id="cnvTxt">Off</b></p>
+      <div class="scroll" id="cnv"></div>
+    </div>
+    <div class="pane" data-pane="more" hidden>
+      <div class="ctrl">
+        <div class="toggle"><div><b>nanoe clean air</b><span>Air purification</span></div><button class="sw" role="switch" id="nanoe" aria-checked="false" aria-label="Clean air"></button></div>
+        <div class="toggle"><div><b>Unit display</b><span>Lights on the indoor unit</span></div><button class="sw" role="switch" id="disp" aria-checked="true" aria-label="Unit display"></button></div>
+      </div>
+      <p class="lbl sub"><span>Energy this week</span><span id="enTag" style="font-weight:500;color:var(--soft)">sample kWh</span></p>
+      <div id="energy"></div>
+    </div>
   </section>
 </div>
 <div class="toast" id="toast"></div>
@@ -413,6 +419,12 @@ document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)r
 $("nanoe").onclick=()=>{S.nanoe=!S.nanoe;render();send({acng:S.nanoe?"on":"off"})};
 $("disp").onclick=()=>{S.disp=!S.disp;render();send({acdc:S.disp?"on":"off"})};
 
+/* ---- tabs ---- */
+function showTab(t){document.querySelectorAll(".tabs [data-tab]").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
+  document.querySelectorAll(".pane").forEach(p=>p.hidden=p.dataset.pane!==t);try{localStorage.setItem("acTab",t)}catch(e){}}
+document.querySelectorAll(".tabs [data-tab]").forEach(b=>b.addEventListener("click",()=>{showTab(b.dataset.tab);buzz()}));
+try{const t=localStorage.getItem("acTab");if(t)showTab(t)}catch(e){}
+
 /* ---- energy ---- */
 function drawEnergy(vals,labels,sample){
   $("enTag").textContent=sample?"sample kWh":"kWh";
@@ -443,7 +455,7 @@ function applyStatus(s){
   if(s.onlineStatus!==undefined)S.online=s.onlineStatus==="true";
   render();
 }
-function setPill(cls,txt){$("pill").className="pill sticker "+cls;$("pillTxt").textContent=txt}
+function setPill(cls,txt){$("pill").className="pill "+cls;$("pillTxt").textContent=txt}
 function pickDevice(id){
   const d=devices.find(x=>x.id===id)||devices[0];if(!d)return;devId=d.id;fw=d.fw||"";
   $("devName").textContent=d.name;$("devSub").textContent=d.model||"Panasonic MirAIe";
@@ -466,7 +478,7 @@ window.onNative=(ev,data)=>{
 function showGate(){$("gate").hidden=false;$("go").disabled=false;$("go").textContent="Connect";$("msg").textContent="";$("signout").hidden=true}
 $("loginForm").addEventListener("submit",e=>{e.preventDefault();if(!NATIVE)return;
   $("msg").textContent="";$("go").disabled=true;$("go").textContent="Connecting…";Native.login($("u").value.trim(),$("p").value)});
-$("tryDemo").onclick=()=>{demo=true;$("gate").hidden=true;setPill("demo","Demo mode");startDemo()};
+$("tryDemo").onclick=()=>{demo=true;$("gate").hidden=true;setPill("demo","Demo");startDemo()};
 $("signout").onclick=()=>{if(NATIVE)Native.logout()};
 
 function startDemo(){
@@ -599,6 +611,6 @@ if(NATIVE){
   drawEnergy([],[],false);
   if(Native.hasSaved()){setPill("wait","Signing in");Native.resume()}else showGate();
   setInterval(()=>{if(!demo&&devId)Native.energy(devId)},30*60*1000);
-}else{setPill("demo","Demo mode · not linked to your AC");startDemo()}
+}else{setPill("demo","Demo");startDemo()}
 </script>
 </body></html>
