@@ -23,8 +23,8 @@ body{color:var(--ink);font-family:var(--display);
 .wrap{position:relative;z-index:1;max-width:440px;margin:0 auto;display:flex;flex-direction:column;height:100%}
 .top{flex:none;display:flex;flex-direction:column;gap:8px}
 .scroller{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:16px;
-  padding:16px 2px calc(28px + env(safe-area-inset-bottom,0px));margin:0 -2px;scrollbar-width:none;
-  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16px);mask-image:linear-gradient(180deg,transparent 0,#000 16px)}
+  padding:16px 2px 14px;margin:0 -2px;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16px,#000 calc(100% - 12px),transparent);mask-image:linear-gradient(180deg,transparent 0,#000 16px,#000 calc(100% - 12px),transparent)}
 .scroller::-webkit-scrollbar{display:none}
 button{font-family:inherit;color:var(--ink)}
 button:focus-visible,input:focus-visible{outline:3px dashed var(--ink);outline-offset:3px}
@@ -173,6 +173,77 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
 .gate .link{align-self:center;background:transparent;border:0}
 .gateBun{width:96px;height:96px;align-self:center;margin-top:-62px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ---------- pages, nav, sheets ---------- */
+.page{display:flex;flex-direction:column;gap:16px}
+.nav{flex:none;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:6px;margin:6px 0 10px;border-radius:22px 20px 24px 18px;position:relative;z-index:2}
+.nav button{border:0;background:none;border-radius:14px;padding:6px 0 4px;display:flex;flex-direction:column;align-items:center;gap:2px;font:600 11px var(--display);cursor:pointer;transition:background .2s}
+.nav svg{width:24px;height:24px}
+.nav button[aria-current="page"]{background:var(--accent-soft);box-shadow:0 0 0 2px var(--ink)}
+.mini{border:2px solid var(--ink);background:var(--paper-solid);border-radius:99px;padding:3px 11px;font:600 12px var(--display);cursor:pointer;box-shadow:0 2px 0 var(--ink);white-space:nowrap;flex:none}
+.mini:active{transform:translateY(2px);box-shadow:none}
+.mini.go{background:var(--accent);color:#fff}
+.lbl .mini{margin:-4px 0}
+.lbl .sw{margin:-6px 0}
+.banner{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:18px;background:#fff0d2;font:600 13px/1.35 var(--display)}
+.banner span{flex:1;min-width:0}
+.banner.soft{background:var(--accent-soft);border:2px solid var(--ink)}
+.list{display:flex;flex-direction:column;gap:10px}
+.sch{display:flex;align-items:center;gap:10px;padding:10px 12px;border:2px solid var(--ink);border-radius:16px;background:var(--paper-solid);box-shadow:0 3px 0 var(--ink)}
+.sch .schMain{flex:1;min-width:0;border:0;background:none;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:2px;padding:0}
+.sch .time{font:700 26px var(--hand);line-height:1}
+.sch .when{font:600 12.5px var(--display)}
+.sch small{font:500 12px var(--display);color:var(--soft)}
+.sch.paused{opacity:.55}
+.emptyNote{font:700 17px/1.25 var(--hand);color:var(--soft);text-align:center;padding:6px 0}
+.nextup{display:flex;align-items:center;gap:12px}
+.nextup b{font:700 22px/1.1 var(--hand)}
+.nextup small{display:block;font:500 12.5px var(--display);color:var(--soft);margin-top:2px}
+.clock{width:46px;height:46px;flex:none;border-radius:50%;border:2px solid var(--ink);background:var(--accent-soft);display:grid;place-items:center}
+.clock svg{width:24px;height:24px}
+.days7{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.chip.day{padding:0;border-radius:50%;aspect-ratio:1;justify-content:center}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stepper{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.stepper output{font:700 32px var(--display);font-variant-numeric:tabular-nums}
+.stepper .bump{width:46px;height:46px;font-size:24px}
+.fieldrow{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;min-width:0}
+.fieldrow>label,.fl{font:600 13px var(--display)}
+.inp{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:10px 12px;font:600 16px var(--display);color:var(--ink);width:100%;box-sizing:border-box;min-width:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sheet{position:fixed;inset:0;z-index:40;background:rgba(61,50,41,.35);display:flex;align-items:flex-end;justify-content:center}
+.sheetCard{width:100%;max-width:460px;max-height:86vh;overflow:auto;border-radius:26px 26px 0 0;border-bottom:0;box-sizing:border-box;
+  padding:18px max(16px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:up .28s cubic-bezier(.3,1.3,.5,1)}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.sheetCard h3{font:700 22px var(--display);margin:0 0 14px}
+.actions{display:flex;gap:10px;margin-top:16px}
+.actions .cta{flex:1;margin:0;padding:12px;font-size:15px}
+.cta.ghost{background:var(--paper-solid);color:var(--ink)}
+.cta.danger{background:#fde2e2;color:var(--bad)}
+.curve{display:block;width:100%;height:auto;touch-action:none;margin:2px 0 10px;cursor:ns-resize}
+.dim .curve,.dim .days7,.dim .two,.dim .toggle{opacity:.5}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;font:500 13.5px var(--display);margin:0}
+.kv dt{color:var(--soft)} .kv dd{margin:0;font-weight:600;text-align:right;overflow-wrap:anywhere;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kpi{border:2px solid var(--ink);border-radius:16px;padding:10px 6px;background:var(--paper-solid);text-align:center;min-width:0}
+.kpi b{display:block;font:700 21px var(--display);font-variant-numeric:tabular-nums}
+.kpi small{font:500 11px/1.3 var(--display);color:var(--soft)}
+.kpi.main{background:var(--accent-soft)}
+.chart{display:flex;align-items:flex-end;gap:4px;height:110px;padding-top:14px}
+.chart button{flex:1;min-width:0;border:2px solid var(--ink);border-bottom:0;border-radius:8px 8px 2px 2px;background:var(--accent-soft);cursor:pointer;padding:0}
+.chart button.hi{background:var(--accent)}
+.axis{display:flex;gap:4px;font:600 9.5px var(--display);color:var(--soft);margin-top:4px;font-variant-numeric:tabular-nums}
+.axis span{flex:1;min-width:0;text-align:center}
+.tips{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:7px;font:500 13.5px/1.45 var(--display)}
+.perm{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:2px dashed color-mix(in srgb,var(--ink) 25%,transparent)}
+.perm:first-of-type{border-top:0;padding-top:0}
+.perm>div{min-width:0}
+.perm b{font:600 14.5px var(--display)} .perm span{display:block;font:500 12px var(--display);color:var(--soft)}
+.ok{font:600 12.5px var(--display);color:var(--good);white-space:nowrap}
+.bar{height:14px;border:2px solid var(--ink);border-radius:99px;background:#efe7d6;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.note{font:500 12.5px/1.45 var(--display);color:var(--soft);margin:8px 0 0}
+.sub2{font:600 13px var(--display);margin:14px 0 8px}
+.scene.add{border-style:dashed;background:transparent}
 </style>
 </head><body>
 
@@ -196,7 +267,6 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
   <div class="top">
     <header class="sticker">
       <div><h1 id="devName">Bedroom</h1><span class="pill demo" id="pill"><i></i><span id="pillTxt">Demo</span></span></div>
-      <button class="link" id="signout" hidden>Sign out</button>
       <button class="pwr" id="pwr" aria-label="Power"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 7a8 8 0 1 0 11.4 0"/></svg></button>
     </header>
     <small id="devSub" hidden>Panasonic SU18BKY3W</small>
@@ -247,11 +317,13 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
     </svg>
     <canvas id="fx"></canvas>
   </section>
-    <div class="side"><div class="chips"><span class="tag sticker" id="modeTag">Cool</span><span class="tag sticker" id="room">Room --</span></div><div class="bubble" id="bubble"></div></div>
+    <div class="side"><div class="chips"><span class="tag sticker" id="modeTag">Cool</span><span class="tag sticker" id="room">Room --</span><span class="tag sticker" id="wx" hidden></span></div><div class="bubble" id="bubble"></div></div>
     </div>
   </div>
 
   <div class="scroller" id="scroller">
+  <div class="page" data-page="home">
+  <div class="banner sticker" id="banner" hidden></div>
   <section class="card sticker tempcard">
     <div class="mood" id="mood">Just right!</div>
     <div class="trow ctrlx">
@@ -271,7 +343,7 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
   <section class="card sticker ctrl">
     <p class="lbl"><span>Fan speed</span><b id="fanTxt">Auto</b></p>
     <div class="row cols5" id="fans"></div>
-    <div class="row cols3" id="presets" style="margin-top:10px"></div>
+    <div class="row cols4" id="presets" style="margin-top:10px"></div>
   </section>
 
   <section class="card sticker ctrl">
@@ -285,20 +357,53 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
     <div class="scroll" id="cnv"></div>
   </section>
 
-  <section class="card sticker ctrl"><p class="lbl">Scenes</p><div class="row cols3" id="scenes"></div></section>
+  <section class="card sticker">
+    <p class="lbl"><span>Timer</span><b id="tmTxt">None</b></p>
+    <div class="seg" id="tmKind"></div>
+    <div class="row cols5" id="timers" style="margin-top:10px"></div>
+    <div class="list" id="tmList" style="margin-top:10px"></div>
+  </section>
+
+  <section class="card sticker ctrl"><p class="lbl"><span>Scenes</span><button class="mini" id="favEdit" hidden>Edit</button></p><div class="row cols3" id="scenes"></div></section>
 
   <section class="card sticker ctrl">
     <p class="lbl">Extras</p>
     <div class="toggle"><div><b>nanoe clean air</b><span>Air purification</span></div><button class="sw" role="switch" id="nanoe" aria-checked="false" aria-label="Clean air"></button></div>
     <div class="toggle"><div><b>Unit display</b><span>Lights on the indoor unit</span></div><button class="sw" role="switch" id="disp" aria-checked="true" aria-label="Unit display"></button></div>
   </section>
-
-  <section class="card sticker">
-    <p class="lbl"><span>Energy this week</span><span id="enTag" style="font-weight:500;color:var(--soft)">sample kWh</span></p>
-    <div id="energy"></div>
-  </section>
   </div>
+
+  <div class="page" data-page="plans" hidden>
+    <section class="card sticker"><p class="lbl">Next up</p><div class="nextup" id="nextUp"></div></section>
+    <section class="card sticker"><p class="lbl"><span>Schedules</span><button class="mini" data-sadd="1">+ Add</button></p><div class="list" id="schList"></div></section>
+    <section class="card sticker" id="sleepCard">
+      <p class="lbl"><span>Sleep curve</span><button class="sw" role="switch" id="slOn" aria-label="Sleep curve"></button></p>
+      <p class="note" style="margin:-4px 0 12px">Starts cool at bedtime, then warms up slowly so you don't wake up cold. Drag the dots.</p>
+      <div class="two"><div class="fieldrow"><label for="slStart">Bedtime</label><input class="inp" type="time" id="slStart"></div><div class="fieldrow"><label for="slEnd">Wake up</label><input class="inp" type="time" id="slEnd"></div></div>
+      <svg class="curve" id="curve" viewBox="0 0 320 170" aria-label="Sleep temperature curve"></svg>
+      <div class="days7" id="slDays"></div>
+      <div style="margin-top:12px">
+        <div class="toggle"><div><b>Quiet fan</b><span>No whooshing while you sleep</span></div><button class="sw" role="switch" id="slQuiet" aria-label="Quiet fan"></button></div>
+        <div class="toggle"><div><b>Lights off</b><span>Dark display on the indoor unit</span></div><button class="sw" role="switch" id="slDark" aria-label="Lights off"></button></div>
+        <div class="toggle"><div><b>Turn off when I wake</b><span>AC switches off at wake-up time</span></div><button class="sw" role="switch" id="slOff" aria-label="Turn off at wake"></button></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="page" data-page="smart" id="pgSmart" hidden></div>
+  <div class="page" data-page="energy" id="pgEnergy" hidden></div>
+  <div class="page" data-page="me" id="pgMe" hidden></div>
+  </div>
+
+  <nav class="nav sticker" id="nav" aria-label="Pages">
+    <button data-go="home" aria-current="page"><svg viewBox="0 0 24 24" fill="#fffbf0" stroke="#3d3229" stroke-width="1.8" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Home</button>
+    <button data-go="plans"><svg viewBox="0 0 24 24" fill="none" stroke="#3d3229" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="13" r="8" fill="#fffbf0"/><path d="M12 9v4l3 2M9 3h6"/></svg>Plans</button>
+    <button data-go="smart"><svg viewBox="0 0 24 24" fill="#ffe08a" stroke="#3d3229" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l2.2 5.3L20 10l-5.8 1.9L12 17l-2.2-5.1L4 10l5.8-1.7z"/><path d="M18.5 15.5l.9 2 2 .9-2 .8-.9 2-.8-2-2-.8 2-.9z"/></svg>Smart</button>
+    <button data-go="energy"><svg viewBox="0 0 24 24" fill="#ffd95a" stroke="#3d3229" stroke-width="1.8" stroke-linejoin="round"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></svg>Energy</button>
+    <button data-go="me"><svg viewBox="0 0 24 24" fill="#fffbf0" stroke="#3d3229" stroke-width="1.6"><ellipse cx="9" cy="6.5" rx="2.2" ry="4.5"/><ellipse cx="15" cy="6.5" rx="2.2" ry="4.5"/><circle cx="12" cy="15" r="6.5"/><circle cx="9.8" cy="14.6" r=".9" fill="#3d3229" stroke="none"/><circle cx="14.2" cy="14.6" r=".9" fill="#3d3229" stroke="none"/></svg>Me</button>
+  </nav>
 </div>
+<div class="sheet" id="sheet" hidden><div class="sheetCard sticker" id="sheetCard" role="dialog" aria-modal="true"></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -327,7 +432,7 @@ function send(cmd,label){
   try{Native.send(JSON.stringify(Object.assign({deviceId:devId},cmd)))}catch(e){toast("Could not send",true)}
   if(label)toast(label);
 }
-const PRESET={none:{acem:"off",acpm:"off",acec:"off",cnv:0},eco:{acem:"on",acpm:"off",acec:"off",actmp:26,cnv:0},boost:{acem:"off",acpm:"on",acec:"off",cnv:0}};
+const PRESET={clean:{acem:"off",acpm:"off",acec:"on",cnv:0},none:{acem:"off",acpm:"off",acec:"off",cnv:0},eco:{acem:"on",acpm:"off",acec:"off",actmp:26,cnv:0},boost:{acem:"off",acpm:"on",acec:"off",cnv:0}};
 
 /* ---- colour helpers ---- */
 const hex=s=>[1,3,5].map(i=>parseInt(s.slice(i,i+2),16));
@@ -385,7 +490,7 @@ function render(){
   $("fans").innerHTML=["auto","quiet","low","medium","high"].map(k=>{const sp={auto:"1.2s",quiet:"3s",low:"1.6s",medium:".8s",high:".35s"}[k],act=S.fan===k&&S.preset!=="boost";
     return`<button class="chip" data-fan="${k}" aria-pressed="${act}" style="--sp:${act&&S.on?sp:"0s"}"><svg viewBox="0 0 24 24" fill="none" stroke="${INK}" stroke-width="1.4" stroke-linejoin="round">${ico.fan}</svg>${FANS[k]}</button>`}).join("");
   $("fanTxt").textContent=S.preset==="boost"?"Powerful":FANS[S.fan]||"Auto";
-  $("presets").innerHTML=[["none","Normal","everyday"],["eco","Eco","saves power"],["boost","Powerful","turbo chill"]].map(([k,n,s])=>`<button class="chip" data-p="${k}" aria-pressed="${S.preset===k}">${n}<small>${s}</small></button>`).join("");
+  $("presets").innerHTML=[["none","Normal","everyday"],["eco","Eco","saves power"],["boost","Powerful","turbo chill"],["clean","Clean","dries coil"]].map(([k,n,s])=>`<button class="chip" data-p="${k}" aria-pressed="${S.preset===k}">${n}<small>${s}</small></button>`).join("");
   $("swing").innerHTML=["Auto","1","2","3","4","5"].map((n,i)=>`<button class="chip" data-s="${i}" aria-pressed="${S.swing===i}" aria-label="${i?"Position "+i:"Auto swing"}">${n}</button>`).join("");
   $("swTxt").textContent=S.swing?`Position ${S.swing}`:"Auto sweep";
   $("cnv").innerHTML=CNV.map(([v,n])=>`<button class="chip" data-c="${v}" aria-pressed="${S.cnv===v}">${n}</button>`).join("");
@@ -423,7 +528,7 @@ $("scenes").innerHTML=SCENES.map((s,i)=>`<button class="chip scene" data-sc="${i
 document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
   if(d.m){S.mode=d.m;render();send({acmd:d.m},`${MODES[d.m][0]} mode`)}
   else if(d.fan){S.fan=d.fan;const cmd={acfs:d.fan};if(S.preset==="boost"){S.preset="none";cmd.acpm="off"}render();send(cmd,`Fan: ${FANS[d.fan]}`)}
-  else if(d.p){S.preset=d.p;S.cnv=0;if(d.p==="eco")S.set=26;render();send(PRESET[d.p],d.p==="none"?"Normal":d.p==="eco"?"Eco · 26°C":"Powerful!")}
+  else if(d.p){S.preset=d.p;S.cnv=0;if(d.p==="eco")S.set=26;render();send(PRESET[d.p],d.p==="none"?"Normal":d.p==="eco"?"Eco · 26°C":d.p==="clean"?"Self-clean started":"Powerful!")}
   else if(d.s){S.swing=+d.s;render();send({acvs:+d.s})}
   else if(d.c!==undefined){S.cnv=+d.c;S.preset="none";render();send({acem:"off",acpm:"off",cnv:+d.c},`Converti ${(CNV.find(c=>c[0]===+d.c)||[0,"off"])[1]}`)}
   else if(d.sc){const cmd=SCENES[+d.sc][2]();render();send(cmd,SCENES[+d.sc][0])}
@@ -449,6 +554,7 @@ function roomTemp(v){
   const n=parseFloat(v);return isNaN(n)?null:n;
 }
 function applyStatus(s){
+  Object.assign(LAST,s);
   if(s.ps!==undefined)S.on=s.ps==="on";
   if(s.actmp!==undefined&&!drag){const t=parseFloat(s.actmp);if(!isNaN(t))S.set=Math.round(t)}
   if(s.rmtmp!==undefined){const r=roomTemp(s.rmtmp);if(r!=null)S.room=r}
@@ -456,7 +562,8 @@ function applyStatus(s){
   if(s.acfs!==undefined&&FANS[s.acfs])S.fan=s.acfs;
   if(s.acvs!==undefined)S.swing=+s.acvs||0;
   if(s.acdc!==undefined)S.disp=s.acdc==="on";
-  if(s.acpm!==undefined||s.acem!==undefined)S.preset=s.acpm==="on"?"boost":s.acem==="on"?"eco":"none";
+  if(s.acpm!==undefined||s.acem!==undefined||s.acec!==undefined)S.preset=s.acpm==="on"?"boost":s.acem==="on"?"eco":s.acec==="on"?"clean":"none";
+  if(s.acfc!==undefined)renderBanner();
   if(s.cnv!==undefined)S.cnv=+s.cnv||0;
   const ng=s.acngs!==undefined?s.acngs:s.acng;if(ng!==undefined)S.nanoe=ng==="on";
   if(s.onlineStatus!==undefined)S.online=s.onlineStatus==="true";
@@ -468,32 +575,379 @@ function pickDevice(id){
   $("devName").textContent=d.name;$("devSub").textContent=d.model||"Panasonic MirAIe";
   $("devPick").hidden=devices.length<2;
   $("devPick").innerHTML=devices.map(x=>`<button class="chip" data-dev="${x.id}" aria-pressed="${x.id===devId}">${x.name}</button>`).join("");
-  if(NATIVE){Native.refresh();Native.energy(devId)}
+  if(NATIVE)Native.refresh();
+  if(CFG.deviceId!==devId){CFG.deviceId=devId;saveCfg(true)}
+  requestEnergy();if(curPage==="me")renderMe();
 }
 const DAYN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 window.onNative=(ev,data)=>{
   if(ev==="phase"){setPill("wait",data)}
   else if(ev==="error"){toast(data,true);if(!$("gate").hidden){$("msg").textContent=data;$("go").disabled=false;$("go").textContent="Connect"}else setPill("down","Connection issue")}
-  else if(ev==="devices"){devices=data;$("gate").hidden=true;demo=false;$("signout").hidden=false;pickDevice(devices[0]&&devices[0].id)}
+  else if(ev==="devices"){devices=data;$("gate").hidden=true;demo=false;pickDevice(devices.some(x=>x.id===CFG.deviceId)?CFG.deviceId:devices[0]&&devices[0].id);
+    if(NATIVE&&!PERMS.notif&&!window.askedNotif){window.askedNotif=1;setTimeout(()=>Native.requestPerm("notif"),1500)}}
   else if(ev==="status"){if(!devId||data.deviceId===devId)applyStatus(data)}
   else if(ev==="online"){if(data.deviceId===devId){S.online=data.onlineStatus==="true";render();if(!S.online)setPill("down","AC offline")}}
   else if(ev==="conn"){data?setPill("live","Live"):setPill("wait","Reconnecting")}
-  else if(ev==="energy"){if(data.deviceId!==devId)return;const days=(data.days||[]).slice(-7);
-    drawEnergy(days.map(x=>+x.power||0),days.map(x=>{const k=String(x.day||"");return k.length===8?DAYN[new Date(+k.slice(4),+k.slice(2,4)-1,+k.slice(0,2)).getDay()]:k}),false)}
+  else if(ev==="energy"){if(data.deviceId===devId)parseEnergy(data)}
+  else if(ev==="perms"){PERMS=data;if(curPage==="smart")renderSmart();if(curPage==="me")renderMe()}
+  else if(ev==="home"){CFG.geo.lat=data.lat;CFG.geo.lng=data.lng;saveCfg(true);toast("Home saved");if(curPage==="smart")renderSmart();setTimeout(()=>N.weather(),300)}
+  else if(ev==="weather"){CACHE.weather=data;renderWeather();if(curPage==="smart")renderSmart()}
+  else if(ev==="cache"){CACHE=data;renderBanner();renderWeather();if(curPage==="smart")renderSmart()}
   else if(ev==="loggedOut"){showGate()}
 };
-function showGate(){$("gate").hidden=false;$("go").disabled=false;$("go").textContent="Connect";$("msg").textContent="";$("signout").hidden=true}
+function showGate(){$("gate").hidden=false;$("go").disabled=false;$("go").textContent="Connect";$("msg").textContent=""}
 $("loginForm").addEventListener("submit",e=>{e.preventDefault();if(!NATIVE)return;
   $("msg").textContent="";$("go").disabled=true;$("go").textContent="Connecting…";Native.login($("u").value.trim(),$("p").value)});
 $("tryDemo").onclick=()=>{demo=true;$("gate").hidden=true;setPill("demo","Demo");startDemo()};
-$("signout").onclick=()=>{if(NATIVE)Native.logout()};
 
 function startDemo(){
-  drawEnergy([3.1,2.6,3.8,4.2,2.9,3.5,1.4],["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],true);
+  sampleEnergy();CACHE={runMin:212*60,weather:{t:33.4,rh:48,max:36.2,code:1,at:Date.now()}};renderHomeExtras();if(curPage!=="home")go(curPage);
   S.room=29;render();
   clearInterval(startDemo.h);startDemo.h=setInterval(()=>{if(!demo)return;const tgt=S.on&&S.mode!=="fan"?S.set:30.5;S.room+=(tgt-S.room)*(S.preset==="boost"?.06:.025);
     $("room").textContent=`Room ${S.room.toFixed(1)}°`},2000);
 }
+
+/* =========================================================
+   APP PAGES — timer, scenes, plans, smart, energy, me
+   Config lives natively (so alarms/geofence can use it); in the
+   browser demo it lives in localStorage.
+   ========================================================= */
+const DEF_CFG={schedules:[],
+  sleep:{on:false,start:"23:00",end:"07:00",days:[0,1,2,3,4,5,6],temps:[24,25,26,26,27],quiet:true,dark:true,offAtEnd:true},
+  timers:[],
+  geo:{on:false,radius:1000,arrive:{acmd:"cool",actmp:"24",acfs:"auto"},leaveOff:true},
+  rules:{offline:true,filterHours:300,longHours:0,longAction:"notify",cold:{on:false,below:21,fix:false}},
+  hot:{on:false,above:36},tariff:8,favorites:[],autoNotify:true};
+const clone=o=>JSON.parse(JSON.stringify(o));
+function deepMerge(a,b){const o=clone(a);for(const k in b){const x=b[k];
+  if(x&&typeof x==="object"&&!Array.isArray(x)&&o[k]&&typeof o[k]==="object"&&!Array.isArray(o[k]))o[k]=deepMerge(o[k],x);else o[k]=x}return o}
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const N=NATIVE?Native:{
+  perms:()=>JSON.stringify({notif:true,fine:false,bg:false,exact:true,battery:false}),
+  requestPerm:()=>toast("This works in the phone app"),openSettings:()=>toast("This works in the phone app"),
+  setHomeHere:()=>setTimeout(()=>window.onNative("home",{lat:12.9716,lng:77.5946}),500),
+  weather:()=>setTimeout(()=>window.onNative("weather",{t:33.4,rh:48,max:36.2,code:1,at:Date.now()}),300),
+  resetFilter:()=>{CACHE.runMin=0;window.onNative("cache",CACHE)},version:()=>"preview"};
+function loadCfg(){let c={};try{c=JSON.parse(NATIVE?Native.getConfig():(localStorage.getItem("acCfg")||"{}"))}catch(e){}return deepMerge(DEF_CFG,c)}
+let CFG=loadCfg(),CACHE={},PERMS={},LAST={},ENERGY={daily:null,monthly:null,sample:false},curPage="home";
+let saveT;
+function saveCfg(now){
+  if(devId)CFG.deviceId=devId;
+  const go=()=>{try{NATIVE?Native.saveConfig(JSON.stringify(CFG)):localStorage.setItem("acCfg",JSON.stringify(CFG))}catch(e){}};
+  clearTimeout(saveT);if(now)go();else saveT=setTimeout(go,400);
+  renderPlans();renderHomeExtras();
+}
+
+/* ---- small helpers ---- */
+const D1=864e5,DAYS1=["S","M","T","W","T","F","S"],DAYS3=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const fmtTime=t=>new Date(t).toLocaleTimeString([],{hour:"numeric",minute:"2-digit"});
+function fmtWhen(t){const d=new Date(t),n=new Date(),tm=new Date(n);tm.setDate(n.getDate()+1);
+  const day=d.toDateString()===n.toDateString()?"Today":d.toDateString()===tm.toDateString()?"Tomorrow":DAYS3[d.getDay()];return day+", "+fmtTime(t)}
+function time12(hm){const[h,m]=String(hm||"0:0").split(":").map(Number);const d=new Date();d.setHours(h||0,m||0,0,0);return fmtTime(+d)}
+function daysText(days){if(!days||!days.length||days.length===7)return"Every day";const s=days.slice().sort().join();
+  if(s==="1,2,3,4,5")return"Weekdays";if(s==="0,6")return"Weekends";return days.slice().sort().map(d=>DAYS3[d]).join(", ")}
+function cmdText(c){c=c||{};if(c.ps==="off")return"Turn off";const p=[];
+  if(c.acmd)p.push(MODES[c.acmd]?MODES[c.acmd][0]:c.acmd);if(c.actmp)p.push(c.actmp+"°");if(c.acfs)p.push((FANS[c.acfs]||c.acfs)+" fan");
+  if(c.acpm==="on")p.push("Powerful");if(c.acem==="on")p.push("Eco");return p.join(" · ")||"Turn on"}
+const chipRow=(items,cur,attr)=>items.map(([v,l])=>`<button type="button" class="chip" ${attr}="${v}" aria-pressed="${String(cur)===String(v)}">${l}</button>`).join("");
+const daysRow=(days,attr)=>DAYS1.map((l,i)=>`<button type="button" class="chip day" ${attr}="${i}" aria-pressed="${(days||[]).includes(i)}" aria-label="${DAYS3[i]}">${l}</button>`).join("");
+const getP=path=>path.split(".").reduce((o,k)=>o==null?o:o[k],CFG);
+function setP(path,v){const ks=path.split(".");let o=CFG;ks.slice(0,-1).forEach(k=>{if(o[k]==null||typeof o[k]!=="object")o[k]={};o=o[k]});o[ks[ks.length-1]]=v}
+const tg=(path,label,sub)=>`<div class="toggle"><div><b>${label}</b>${sub?`<span>${sub}</span>`:""}</div><button class="sw" role="switch" aria-checked="${!!getP(path)}" aria-label="${label}" data-tg="${path}"></button></div>`;
+const opts=(path,items)=>`<div class="scroll">${items.map(([v,l])=>`<button type="button" class="chip" data-set="${path}" data-v="${v}" aria-pressed="${String(getP(path))===String(v)}">${l}</button>`).join("")}</div>`;
+const CLOCK='<svg viewBox="0 0 24 24" fill="none" stroke="#3d3229" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>';
+
+/* ---- plan events (same rules as the phone's alarm engine) ---- */
+function events(cfg,from,to){const out=[];
+  const at=(base,off,h,m)=>{const d=new Date(base);d.setDate(d.getDate()+off);d.setHours(h,m,0,0);return d};
+  const hm=s=>{const[a,b]=String(s||"0:0").split(":");return[+a||0,+b||0]};
+  (cfg.schedules||[]).forEach(s=>{if(s.on===false)return;const[h,m]=hm(s.time),days=s.days||[];
+    for(let d=-1;d<=8;d++){const c=at(from,d,h,m);if(days.length&&!days.includes(c.getDay()))continue;const t=+c;if(t>=from&&t<=to)out.push({at:t,cmd:s.cmd||{},label:s.name||"Schedule"})}});
+  const sl=cfg.sleep;if(sl&&sl.on){const[h,m]=hm(sl.start),[eh,em]=hm(sl.end),days=sl.days||[],T=sl.temps||[24,25,26,27],n=T.length;
+    for(let d=-2;d<=8;d++){const c=at(from,d,h,m);if(days.length&&!days.includes(c.getDay()))continue;const start=+c;let end=+at(from,d,eh,em);if(end<=start)end+=D1;const span=end-start;
+      T.forEach((tp,k)=>{const t=start+Math.floor(span*k/n);if(t>=from&&t<=to)out.push({at:t,cmd:k?{actmp:String(tp)}:{ps:"on",acmd:"cool",actmp:String(tp)},label:k?"Sleep curve":"Sleep mode starts"})});
+      if(sl.offAtEnd&&end>=from&&end<=to)out.push({at:end,cmd:{ps:"off"},label:"Wake up: AC off"})}}
+  (cfg.timers||[]).forEach(t=>{if(t.at>=from&&t.at<=to)out.push({at:t.at,cmd:t.cmd||{ps:"off"},label:t.label||"Timer"})});
+  return out.sort((a,b)=>a.at-b.at)}
+
+/* ---- home extras: timer, scenes, banner, weather ---- */
+let TMK="off",FAVEDIT=false;
+function renderTimers(){
+  const ts=(CFG.timers||[]).filter(t=>t.at>Date.now()).sort((a,b)=>a.at-b.at);
+  $("tmTxt").textContent=ts.length?((ts[0].cmd||{}).ps==="on"?"On":"Off")+" at "+fmtTime(ts[0].at):"None";
+  $("tmKind").innerHTML=chipRow([["off","Turn off in…"],["on","Turn on in…"]],TMK,"data-tmk");
+  $("timers").innerHTML=[["30","30 m"],["60","1 h"],["120","2 h"],["240","4 h"],["480","8 h"]].map(([v,l])=>`<button type="button" class="chip" data-tm="${v}">${l}</button>`).join("");
+  $("tmList").innerHTML=ts.map(t=>`<div class="banner soft"><span>${(t.cmd||{}).ps==="on"?"Turns on":"Turns off"} <b>${fmtWhen(t.at)}</b></span><button type="button" class="mini" data-tmx="${t.at}">Cancel</button></div>`).join("");
+}
+function currentCmd(){return{ps:"on",acmd:S.mode,actmp:String(S.set),acfs:S.fan,acvs:S.swing,acdc:S.disp?"on":"off",acng:S.nanoe?"on":"off",cnv:S.cnv,
+  acpm:S.preset==="boost"?"on":"off",acem:S.preset==="eco"?"on":"off"}}
+function applyCmdToS(c){if(c.ps)S.on=c.ps==="on";if(c.acmd)S.mode=c.acmd;if(c.actmp)S.set=Math.round(+c.actmp);if(c.acfs)S.fan=c.acfs;if(c.acvs!==undefined)S.swing=+c.acvs;
+  if(c.acdc)S.disp=c.acdc==="on";if(c.acng)S.nanoe=c.acng==="on";if(c.cnv!==undefined)S.cnv=+c.cnv;if(c.acpm||c.acem)S.preset=c.acpm==="on"?"boost":c.acem==="on"?"eco":"none"}
+function renderScenes(){const favs=CFG.favorites||[];
+  $("scenes").innerHTML=SCENES.map((s,i)=>`<button class="chip scene" data-sc="${i}"><b>${s[0]}</b><small>${s[1]}</small></button>`).join("")
+    +favs.map((f,i)=>`<button class="chip scene" ${FAVEDIT?`data-favx="${i}"`:`data-fav="${i}"`}><b>${esc(f.name)}${FAVEDIT?" ✕":""}</b><small>${esc(cmdText(f.cmd))}</small></button>`).join("")
+    +(FAVEDIT?"":`<button class="chip scene add" data-favadd="1"><b>+ Save</b><small>current settings</small></button>`);
+  $("favEdit").hidden=!favs.length;$("favEdit").textContent=FAVEDIT?"Done":"Edit";
+}
+function renderBanner(){const fh=+CFG.rules.filterHours||0,hrs=(+CACHE.runMin||0)/60,acfc=LAST.acfc==="on",show=acfc||(fh>0&&hrs>=fh);
+  $("banner").hidden=!show;
+  if(show)$("banner").innerHTML=`<span>${acfc?"Your AC is asking for a filter clean.":`Filter check due: about ${Math.round(hrs)} hours of cooling since the last clean.`}</span><button type="button" class="mini" data-filterdone="1">Cleaned</button>`;
+}
+function renderWeather(){const w=CACHE.weather,el=$("wx");if(!el)return;el.hidden=!w;if(w)el.textContent=`Outside ${Math.round(w.t)}°`}
+function renderHomeExtras(){renderTimers();renderScenes();renderBanner();renderWeather()}
+
+/* ---- sheet (bottom pop-up) ---- */
+let SHEET="",ED=null;
+function openSheet(kind,html){SHEET=kind;$("sheetCard").innerHTML=html;$("sheet").hidden=false}
+function closeSheet(){$("sheet").hidden=true;$("sheetCard").innerHTML="";SHEET=""}
+$("sheet").addEventListener("click",e=>{if(e.target.id==="sheet")closeSheet()});
+function schEditor(i){const s=i>=0?CFG.schedules[i]:null,c=s?(s.cmd||{}):{ps:"on",acmd:"cool",actmp:"24",acfs:"auto"};
+  ED={i,name:s?s.name:"",time:s?s.time:"07:00",days:s?(s.days||[]).slice():[1,2,3,4,5],on:c.ps!=="off",mode:c.acmd||"cool",temp:+(c.actmp||24),fan:c.acfs||"auto"};drawEd()}
+function edGrab(){const n=$("edName"),t=$("edTime");if(n)ED.name=n.value;if(t&&t.value)ED.time=t.value}
+function drawEd(){openSheet("sch",`<h3>${ED.i>=0?"Edit schedule":"New schedule"}</h3>
+  <div class="fieldrow"><label for="edName">Name</label><input class="inp" id="edName" maxlength="24" placeholder="e.g. Cool before I get home" value="${esc(ED.name)}"></div>
+  <div class="fieldrow"><label for="edTime">Time</label><input class="inp" id="edTime" type="time" value="${ED.time}"></div>
+  <div class="fieldrow"><span class="fl">Days</span><div class="days7">${daysRow(ED.days,"data-ed-day")}</div></div>
+  <div class="fieldrow"><span class="fl">Action</span><div class="seg">${chipRow([["1","Turn on"],["0","Turn off"]],ED.on?"1":"0","data-ed-on")}</div></div>
+  ${ED.on?`<div class="fieldrow"><span class="fl">Mode</span><div class="row cols4">${chipRow(Object.entries(MODES).map(([k,v])=>[k,v[0]]),ED.mode,"data-ed-mode")}</div></div>
+  <div class="fieldrow"><span class="fl">Temperature</span><div class="stepper"><button type="button" class="bump" data-ed-t="-1" aria-label="Colder">−</button><output>${ED.temp}°C</output><button type="button" class="bump" data-ed-t="1" aria-label="Warmer">+</button></div></div>
+  <div class="fieldrow"><span class="fl">Fan</span><div class="row cols5">${chipRow(Object.entries(FANS),ED.fan,"data-ed-fan")}</div></div>`:""}
+  <div class="actions">${ED.i>=0?`<button type="button" class="cta danger" data-ed-del="1">Delete</button>`:""}<button type="button" class="cta ghost" data-ed-cancel="1">Cancel</button><button type="button" class="cta" data-ed-save="1">Save</button></div>`)}
+function favSheet(){openSheet("fav",`<h3>Save as a scene</h3><p class="note" style="margin:-6px 0 12px">${esc(cmdText(currentCmd()))}</p>
+  <div class="fieldrow"><label for="favName">Name</label><input class="inp" id="favName" maxlength="20" placeholder="e.g. Movie night"></div>
+  <div class="actions"><button type="button" class="cta ghost" data-fv-cancel="1">Cancel</button><button type="button" class="cta" data-fv-save="1">Save</button></div>`)}
+$("sheetCard").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+  if(SHEET==="sch"){edGrab();
+    if(d.edDay!==undefined){const x=+d.edDay;ED.days=ED.days.includes(x)?ED.days.filter(v=>v!==x):[...ED.days,x];drawEd()}
+    else if(d.edOn!==undefined){ED.on=d.edOn==="1";drawEd()}
+    else if(d.edMode){ED.mode=d.edMode;drawEd()}
+    else if(d.edFan){ED.fan=d.edFan;drawEd()}
+    else if(d.edT){ED.temp=Math.max(16,Math.min(30,ED.temp+(+d.edT)));drawEd()}
+    else if(d.edCancel){closeSheet()}
+    else if(d.edDel){CFG.schedules.splice(ED.i,1);closeSheet();saveCfg(true);toast("Schedule deleted")}
+    else if(d.edSave){const cmd=ED.on?{ps:"on",acmd:ED.mode,actmp:String(ED.temp),acfs:ED.fan}:{ps:"off"};
+      const old=ED.i>=0?CFG.schedules[ED.i]:null;
+      const s={id:old&&old.id||Date.now(),on:old?old.on!==false:true,name:ED.name.trim()||(ED.on?"AC on":"AC off"),time:ED.time,days:ED.days.slice().sort(),cmd};
+      if(old)CFG.schedules[ED.i]=s;else CFG.schedules.push(s);closeSheet();saveCfg(true);toast("Schedule saved")}
+  }else if(SHEET==="fav"){
+    if(d.fvCancel)closeSheet();
+    else if(d.fvSave){const name=($("favName").value||"").trim()||"My scene";CFG.favorites=CFG.favorites||[];CFG.favorites.push({name,cmd:currentCmd()});closeSheet();saveCfg(true);toast(`Saved “${name}”`)}
+  }
+});
+
+/* ---- plans page ---- */
+function renderPlans(){
+  const now=Date.now(),nx=events(CFG,now,now+9*D1)[0];
+  $("nextUp").innerHTML=nx?`<div class="clock">${CLOCK}</div><div><b>${esc(nx.label)}</b><small>${fmtWhen(nx.at)} · ${esc(cmdText(nx.cmd))}</small></div>`
+    :`<div class="emptyNote" style="flex:1">Nothing planned yet</div>`;
+  const sc=CFG.schedules||[];
+  $("schList").innerHTML=sc.length?sc.map((s,i)=>`<div class="sch${s.on===false?" paused":""}"><button class="schMain" data-sedit="${i}"><span class="time">${time12(s.time)}</span><span class="when">${esc(s.name||"Schedule")} · ${daysText(s.days)}</span><small>${esc(cmdText(s.cmd))}</small></button><button class="sw" role="switch" aria-label="${esc(s.name||"Schedule")} on" aria-checked="${s.on!==false}" data-stog="${i}"></button></div>`).join("")
+    :`<div class="emptyNote">No schedules yet.<br>Tap “+ Add” to switch the AC on or off at set times.</div>`;
+  renderSleep();
+}
+const GX0=40,GX1=300,GY0=22,GY1=128,TMIN=20,TMAX=30;
+const gy=t=>GY1-(t-TMIN)/(TMAX-TMIN)*(GY1-GY0),gx=(k,n)=>GX0+(GX1-GX0)*k/Math.max(1,n-1);
+function sleepSpan(){const sl=CFG.sleep,[h,m]=sl.start.split(":").map(Number),[eh,em]=sl.end.split(":").map(Number);let a=h*60+m,b=eh*60+em;if(b<=a)b+=1440;return{a,span:b-a}}
+function slotTime(k,n,sp){const d=new Date();d.setHours(0,sp.a+Math.floor(sp.span*k/n),0,0);return fmtTime(+d).replace(":00","")}
+function drawCurve(){const T=CFG.sleep.temps,n=T.length,sp=sleepSpan();let s="";
+  for(let t=TMIN;t<=TMAX;t+=2)s+=`<line x1="${GX0-14}" x2="${GX1+14}" y1="${gy(t)}" y2="${gy(t)}" stroke="#e8dfcf" stroke-width="1.2"/><text x="2" y="${gy(t)+4}" font-size="11" fill="#7a6b5c" font-family="Fredoka,sans-serif">${t}°</text>`;
+  const pts=T.map((t,k)=>[gx(k,n),gy(t)]);let d=`M${pts[0][0]} ${pts[0][1]}`;
+  for(let k=1;k<n;k++){const[x0,y0]=pts[k-1],[x1,y1]=pts[k],mx=(x0+x1)/2;d+=` C${mx} ${y0} ${mx} ${y1} ${x1} ${y1}`}
+  s+=`<path d="${d} L${pts[n-1][0]} ${GY1+8} L${pts[0][0]} ${GY1+8}Z" fill="var(--accent-soft)"/><path d="${d}" fill="none" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/>`;
+  pts.forEach(([x,y],k)=>{s+=`<circle cx="${x}" cy="${y}" r="14" fill="#fffbf0" stroke="#3d3229" stroke-width="2"/><text x="${x}" y="${y+4}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#3d3229" font-family="Fredoka,sans-serif">${T[k]}°</text>`
+    +`<text x="${x}" y="160" text-anchor="middle" font-size="10.5" fill="#7a6b5c" font-family="Fredoka,sans-serif">${slotTime(k,n,sp)}</text>`});
+  $("curve").innerHTML=s}
+function renderSleep(){const sl=CFG.sleep;$("slOn").setAttribute("aria-checked",!!sl.on);
+  if(document.activeElement!==$("slStart"))$("slStart").value=sl.start;if(document.activeElement!==$("slEnd"))$("slEnd").value=sl.end;
+  $("slDays").innerHTML=daysRow(sl.days||[],"data-sl-day");
+  $("slQuiet").setAttribute("aria-checked",!!sl.quiet);$("slDark").setAttribute("aria-checked",!!sl.dark);$("slOff").setAttribute("aria-checked",!!sl.offAtEnd);
+  $("sleepCard").classList.toggle("dim",!sl.on);drawCurve()}
+let dragPt=-1;const curve=$("curve");
+function moveCurve(e){const r=curve.getBoundingClientRect(),y=(e.clientY-r.top)/r.height*170;
+  const v=Math.max(TMIN,Math.min(TMAX,Math.round(TMIN+(GY1-y)/(GY1-GY0)*(TMAX-TMIN))));
+  if(CFG.sleep.temps[dragPt]!==v){CFG.sleep.temps[dragPt]=v;drawCurve();buzz()}}
+curve.addEventListener("pointerdown",e=>{const r=curve.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*320,n=CFG.sleep.temps.length;
+  let best=0,bd=1e9;for(let k=0;k<n;k++){const dd=Math.abs(gx(k,n)-x);if(dd<bd){bd=dd;best=k}}dragPt=best;curve.setPointerCapture(e.pointerId);moveCurve(e)});
+curve.addEventListener("pointermove",e=>{if(dragPt>=0)moveCurve(e)});
+const endCurve=()=>{if(dragPt>=0){dragPt=-1;saveCfg();toast("Sleep curve saved")}};
+curve.addEventListener("pointerup",endCurve);curve.addEventListener("pointercancel",endCurve);
+$("slStart").addEventListener("change",e=>{if(e.target.value){CFG.sleep.start=e.target.value;saveCfg()}});
+$("slEnd").addEventListener("change",e=>{if(e.target.value){CFG.sleep.end=e.target.value;saveCfg()}});
+$("slOn").onclick=()=>{CFG.sleep.on=!CFG.sleep.on;saveCfg(true);toast(CFG.sleep.on?"Sleep curve on":"Sleep curve off")};
+$("slQuiet").onclick=()=>{CFG.sleep.quiet=!CFG.sleep.quiet;saveCfg()};
+$("slDark").onclick=()=>{CFG.sleep.dark=!CFG.sleep.dark;saveCfg()};
+$("slOff").onclick=()=>{CFG.sleep.offAtEnd=!CFG.sleep.offAtEnd;saveCfg()};
+
+/* ---- smart page ---- */
+function renderSmart(){const g=CFG.geo,r=CFG.rules,w=CACHE.weather,P=PERMS,hrs=(+CACHE.runMin||0)/60,fh=+r.filterHours||0;
+  const loc=!P.fine?`<button type="button" class="mini go" data-fix="location">Allow</button>`:!P.bg?`<button type="button" class="mini go" data-fix="bg">Allow all the time</button>`:`<span class="ok">✓ Ready</span>`;
+  $("pgSmart").innerHTML=`
+  <section class="card sticker">
+    <p class="lbl"><span>Arrive home</span><button class="sw" role="switch" aria-label="Arrive home" aria-checked="${!!g.on}" data-tg="geo.on"></button></p>
+    <p class="note" style="margin:-4px 0 12px">When your phone gets close to home, Mochi turns the AC on so the room is cool when you walk in.</p>
+    <div class="perm"><div><b>${g.lat!=null?"Home is saved":"Home not set yet"}</b><span>${g.lat!=null?`${(+g.lat).toFixed(4)}, ${(+g.lng).toFixed(4)}`:"Tap this while you're at home"}</span></div><button type="button" class="mini" data-home="1">Set home here</button></div>
+    <div class="perm"><div><b>Location access</b><span>Android needs “Allow all the time” for this</span></div>${loc}</div>
+    <p class="sub2">Start when I'm within</p>${opts("geo.radius",[[300,"300 m"],[500,"500 m"],[1000,"1 km"],[2000,"2 km"]])}
+    <p class="sub2">Arrive-home settings</p>
+    <div class="row cols4">${Object.entries(MODES).map(([k,v])=>`<button type="button" class="chip" data-set="geo.arrive.acmd" data-v="${k}" aria-pressed="${g.arrive.acmd===k}">${v[0]}</button>`).join("")}</div>
+    <div class="stepper" style="margin-top:10px"><button type="button" class="bump" data-gt="-1" aria-label="Colder">−</button><output>${esc(g.arrive.actmp)}°C</output><button type="button" class="bump" data-gt="1" aria-label="Warmer">+</button></div>
+    <div style="margin-top:8px">${tg("geo.leaveOff","Turn off when I leave","In case you forget")}</div>
+  </section>
+  <section class="card sticker">
+    <p class="lbl">Alerts</p>
+    ${tg("rules.offline","AC goes offline","Wi-Fi or power problem")}
+    <div class="toggle"><div><b>AC on for a long time</b><span>Remind me, or switch it off</span></div></div>
+    ${opts("rules.longHours",[[0,"Never"],[4,"4 h"],[6,"6 h"],[8,"8 h"],[12,"12 h"]])}
+    ${+r.longHours?`<div class="seg" style="margin-top:8px">${[["notify","Just remind me"],["off","Turn it off"]].map(([v,l])=>`<button type="button" class="chip" data-set="rules.longAction" data-v="${v}" aria-pressed="${r.longAction===v}">${l}</button>`).join("")}</div>`:""}
+    <div style="margin-top:6px">${tg("autoNotify","Tell me when plans run","A quiet note when a schedule or sleep mode acts")}</div>
+  </section>
+  <section class="card sticker">
+    <p class="lbl"><span>Too-cold guard</span><button class="sw" role="switch" aria-label="Too-cold guard" aria-checked="${!!r.cold.on}" data-tg="rules.cold.on"></button></p>
+    <p class="note" style="margin:-4px 0 4px">Uses your AC's room sensor, so nobody wakes up shivering.</p>
+    <p class="sub2">When the room drops below</p>${opts("rules.cold.below",[[19,"19°"],[20,"20°"],[21,"21°"],[22,"22°"],[23,"23°"]])}
+    <div style="margin-top:6px">${tg("rules.cold.fix","Fix it for me","Raise the AC to 25°C instead of only warning")}</div>
+  </section>
+  <section class="card sticker">
+    <p class="lbl"><span>Hot-day boost</span><button class="sw" role="switch" aria-label="Hot-day boost" aria-checked="${!!CFG.hot.on}" data-tg="hot.on"></button></p>
+    <p class="note" style="margin:-4px 0 4px">On scorching days, schedules and arrive-home start in Powerful mode to cool the room faster.</p>
+    <p class="sub2">When it's hotter than</p>${opts("hot.above",[[34,"34°"],[36,"36°"],[38,"38°"],[40,"40°"]])}
+    <p class="note">${w?`Outside now: ${Math.round(w.t)}°C · today's high ${Math.round(w.max)}°C · humidity ${Math.round(w.rh)}%`:"Set your home above to get local weather."}</p>
+  </section>
+  <section class="card sticker">
+    <p class="lbl"><span>Filter care</span><b>${Math.round(hrs)} h</b></p>
+    <div class="bar"><i style="width:${fh?Math.min(100,hrs/fh*100):0}%"></i></div>
+    <p class="note">${LAST.acfc==="on"?"Your AC says the filter needs cleaning now. ":""}${fh?`Reminder after ${fh} hours of cooling.`:"Reminder is off."} Hours are counted while the app checks in, about every 15 minutes.</p>
+    <p class="sub2">Remind me after</p>${opts("rules.filterHours",[[0,"Off"],[150,"150 h"],[300,"300 h"],[500,"500 h"]])}
+    <div class="actions"><button type="button" class="cta ghost" data-filterdone="1">I cleaned the filter</button></div>
+  </section>`;
+}
+
+/* ---- energy page ---- */
+const p2=n=>String(n).padStart(2,"0"),fmtD=d=>p2(d.getDate())+p2(d.getMonth()+1)+d.getFullYear(),fmtM=d=>p2(d.getMonth()+1)+d.getFullYear();
+function requestEnergy(){
+  if(!NATIVE||demo){sampleEnergy();return}
+  if(!devId)return;const t=new Date(),s=new Date();s.setDate(t.getDate()-29);const m=new Date(t.getFullYear(),t.getMonth()-5,1);
+  Native.energy(devId,"Daily",fmtD(s),fmtD(t),"d30");Native.energy(devId,"Monthly",fmtM(m),fmtM(t),"m6");
+}
+function sampleEnergy(){const t=new Date(),D=[],M=[];
+  for(let i=29;i>=0;i--){const d=new Date(t);d.setDate(t.getDate()-i);d.setHours(0,0,0,0);D.push({d,kwh:+(2+1.8*Math.abs(Math.sin(i*1.7))+(i%7===0?1.2:0)).toFixed(1)})}
+  for(let i=5;i>=0;i--){const d=new Date(t.getFullYear(),t.getMonth()-i,1);
+    M.push({d,ym:d.getFullYear()*12+d.getMonth(),kwh:i?[62,88,105,96,71][5-i]:+D.filter(x=>x.d.getMonth()===t.getMonth()).reduce((a,x)=>a+x.kwh,0).toFixed(1)})}
+  ENERGY={daily:D,monthly:M,sample:true}}
+function parseEnergy(data){const items=data.items||[];
+  if(data.tag==="d30")ENERGY.daily=items.map(x=>{const k=String(x.day||"");return{d:new Date(+k.slice(4),+k.slice(2,4)-1,+k.slice(0,2)),kwh:+x.power||0}}).filter(x=>!isNaN(+x.d)).sort((a,b)=>a.d-b.d);
+  if(data.tag==="m6")ENERGY.monthly=items.map(x=>{const k=String(x.month||"");const d=new Date(+k.slice(2),+k.slice(0,2)-1,1);return{d,ym:d.getFullYear()*12+d.getMonth(),kwh:+x.power||0}}).filter(x=>!isNaN(+x.d)).sort((a,b)=>a.d-b.d);
+  ENERGY.sample=false;if(curPage==="energy")renderEnergy(false)}
+function renderEnergy(fetch){
+  if(fetch)requestEnergy();
+  const rate=+CFG.tariff||8,D=ENERGY.daily||[],M=ENERGY.monthly||[],now=new Date(),ym=now.getFullYear()*12+now.getMonth();
+  const rs=v=>"₹"+Math.round(v*rate).toLocaleString("en-IN");
+  const fromDaily=D.filter(x=>x.d.getFullYear()*12+x.d.getMonth()===ym).reduce((a,x)=>a+x.kwh,0);
+  const mThis=M.find(x=>x.ym===ym),mLast=M.find(x=>x.ym===ym-1),cur=mThis?mThis.kwh:fromDaily;
+  const dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate(),proj=cur/Math.max(1,now.getDate())*dim;
+  const L=D.slice(-14),mx=Math.max(.1,...L.map(x=>x.kwh)),M6=M.slice(-6),mmx=Math.max(.1,...M6.map(x=>x.kwh));
+  const avg=D.length?D.reduce((a,x)=>a+x.kwh,0)/D.length:0,top=D.reduce((a,x)=>!a||x.kwh>a.kwh?x:a,null);
+  ENERGY.L=L;ENERGY.M6=M6;
+  $("pgEnergy").innerHTML=`
+  <section class="card sticker">
+    <p class="lbl"><span>Your electricity rate</span>${ENERGY.sample?`<span style="font-weight:500;color:var(--soft)">sample data</span>`:""}</p>
+    <div class="stepper"><button type="button" class="bump" data-rate="-0.5" aria-label="Lower rate">−</button><output>₹${rate.toFixed(1)}<small style="font-size:14px;color:var(--soft)"> per unit</small></output><button type="button" class="bump" data-rate="0.5" aria-label="Higher rate">+</button></div>
+    <p class="note">Use the per-unit rate on your electricity bill (1 unit = 1 kWh).</p>
+  </section>
+  <section class="card sticker">
+    <p class="lbl">${now.toLocaleDateString([],{month:"long"})} bill for the AC</p>
+    <div class="kpis"><div class="kpi main"><b>${rs(cur)}</b><small>so far<br>${cur.toFixed(1)} kWh</small></div><div class="kpi"><b>${rs(proj)}</b><small>expected<br>by month end</small></div><div class="kpi"><b>${mLast?rs(mLast.kwh):"—"}</b><small>last month<br>${mLast?mLast.kwh.toFixed(0)+" kWh":""}</small></div></div>
+  </section>
+  <section class="card sticker">
+    <p class="lbl"><span>Last 14 days</span><b>${L.length?rs(L.reduce((a,x)=>a+x.kwh,0)):""}</b></p>
+    ${L.length?`<div class="chart">${L.map((x,i)=>`<button type="button" data-eday="${i}" class="${i===L.length-1?"hi":""}" style="height:${Math.max(4,x.kwh/mx*100)}%" aria-label="${x.d.toDateString()}: ${x.kwh.toFixed(1)} kWh"></button>`).join("")}</div><div class="ground"></div><div class="axis">${L.map(x=>`<span>${x.d.getDate()}</span>`).join("")}</div>`
+      :`<div class="emptyNote">${ENERGY.daily?"No usage recorded yet":"Loading…"}</div>`}
+  </section>
+  <section class="card sticker">
+    <p class="lbl">Month by month</p>
+    ${M6.length?`<div class="chart">${M6.map((x,i)=>`<button type="button" data-emon="${i}" class="${x.ym===ym?"hi":""}" style="height:${Math.max(4,x.kwh/mmx*100)}%" aria-label="${x.d.toLocaleDateString([],{month:"long"})}: ${x.kwh.toFixed(0)} kWh"></button>`).join("")}</div><div class="ground"></div><div class="axis">${M6.map(x=>`<span>${x.d.toLocaleDateString([],{month:"short"})}<br>${rs(x.kwh)}</span>`).join("")}</div>`
+      :`<div class="emptyNote">${ENERGY.monthly?"No monthly data yet":"Loading…"}</div>`}
+  </section>
+  <section class="card sticker">
+    <p class="lbl">Insights</p>
+    <ul class="tips">
+      ${D.length?`<li>The AC uses about <b>${avg.toFixed(1)} kWh a day</b> (${rs(avg)}).</li>`:""}
+      ${top&&top.kwh>0?`<li>Biggest day: <b>${top.d.toLocaleDateString([],{weekday:"short",day:"numeric",month:"short"})}</b> with ${top.kwh.toFixed(1)} kWh (${rs(top.kwh)}).</li>`:""}
+      ${+CACHE.runMin?`<li>Mochi has counted about <b>${Math.round(CACHE.runMin/60)} hours</b> of AC time.</li>`:""}
+      <li>Rule of thumb: each 1°C warmer saves roughly 6% energy. 24–26°C is comfy and efficient.</li>
+      <li>On mild nights, Eco or Converti at 60–80% uses less power.</li>
+    </ul>
+  </section>`;
+}
+
+/* ---- me page ---- */
+function renderMe(){const d=devices.find(x=>x.id===devId)||{},P=PERMS,rssi=LAST.rssi!=null&&LAST.rssi!==""?+LAST.rssi:null;
+  const sig=rssi==null?"—":rssi>-60?"Strong":rssi>-70?"Good":rssi>-80?"Weak":"Very weak";
+  const row=(k,v)=>`<dt>${k}</dt><dd>${v}</dd>`;
+  const perm=(ok,title,sub,fix,btn)=>`<div class="perm"><div><b>${title}</b><span>${sub}</span></div>${ok?`<span class="ok">✓ On</span>`:`<button type="button" class="mini go" data-fix="${fix}">${btn}</button>`}</div>`;
+  $("pgMe").innerHTML=`
+  <section class="card sticker"><p class="lbl">Your AC</p><dl class="kv">
+    ${row("Name",esc(d.name||$("devName").textContent))}${row("Model",esc(d.model||"CS/CU-SU18BKY3W"))}${row("Firmware",esc(d.fw||"—"))}
+    ${row("Status",S.online?"Online":"Offline")}${row("Wi-Fi signal",sig+(rssi!=null?` (${rssi} dBm)`:""))}
+    ${row("Filter",LAST.acfc==="on"?"Needs cleaning":"OK")}${row("Device ID",`<span style="font-size:11px;user-select:text;-webkit-user-select:text">${esc(devId||"demo")}</span>`)}
+  </dl></section>
+  <section class="card sticker"><p class="lbl">Keep Mochi working in the background</p>
+    ${perm(P.notif,"Notifications","Alerts and plan updates","notif","Allow")}
+    ${perm(P.exact,"Exact timing","Schedules run on the minute","exact","Allow")}
+    ${perm(P.battery,"No battery limits","Stops Android pausing your plans","battery","Fix")}
+    ${CFG.geo.on?perm(P.bg,"Location all the time","For arrive-home","bg","Allow"):""}
+  </section>
+  <section class="card sticker"><p class="lbl">Shortcuts</p><ul class="tips">
+    <li><b>Widget:</b> long-press your home screen → Widgets → AC Control.</li>
+    <li><b>Quick tile:</b> open Quick Settings → edit (pencil) → drag in <b>Mochi AC</b>.</li>
+    <li><b>App shortcuts:</b> long-press the app icon for AC on, AC off, Quick chill and Bedtime.</li>
+    <li><b>Voice:</b> link your MirAIe account in Google Home or Alexa. It's the same AC.</li>
+  </ul></section>
+  <section class="card sticker"><p class="lbl">Account</p>
+    <p class="note" style="margin:0 0 12px">${demo?"You're trying the demo.":"Signed in to MirAIe. Your login is stored encrypted on this phone."}</p>
+    <div class="actions" style="margin:0"><button type="button" class="cta ghost" id="signout">${demo?"Sign in":"Sign out"}</button></div>
+    <p class="note">AC Control ${esc(N.version())} · unofficial app using the MirAIe cloud</p>
+  </section>`;
+  $("signout").onclick=()=>{if(NATIVE&&!demo)Native.logout();else showGate()};
+}
+
+/* ---- navigation + clicks for all of the above ---- */
+function go(p){curPage=p;document.querySelectorAll(".page").forEach(x=>x.hidden=x.dataset.page!==p);
+  document.querySelectorAll("#nav [data-go]").forEach(b=>b.setAttribute("aria-current",b.dataset.go===p?"page":"false"));
+  $("scroller").scrollTop=0;
+  if(p==="plans")renderPlans();if(p==="smart"){renderSmart();if(CFG.geo.lat!=null&&!CACHE.weather)N.weather()}
+  if(p==="energy")renderEnergy(true);if(p==="me")renderMe();buzz()}
+function afterSmart(path){
+  if(path==="geo.on"&&CFG.geo.on&&!PERMS.fine)N.requestPerm("location");
+  saveCfg(true);renderSmart();
+}
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+  if(d.go)go(d.go);
+  else if(d.tmk){TMK=d.tmk;renderTimers()}
+  else if(d.tm){const at=Date.now()+(+d.tm)*60000;CFG.timers=(CFG.timers||[]).filter(t=>t.at>Date.now()&&(t.cmd||{}).ps!==TMK);
+    CFG.timers.push({at,cmd:{ps:TMK},label:TMK==="off"?"Timer: AC off":"Timer: AC on"});saveCfg(true);toast(`${TMK==="off"?"Turns off":"Turns on"} at ${fmtTime(at)}`)}
+  else if(d.tmx){CFG.timers=(CFG.timers||[]).filter(t=>String(t.at)!==d.tmx);saveCfg(true);toast("Timer cancelled")}
+  else if(d.fav!==undefined){const f=(CFG.favorites||[])[+d.fav];if(f){applyCmdToS(f.cmd);render();send(f.cmd,f.name)}}
+  else if(d.favx!==undefined){CFG.favorites.splice(+d.favx,1);if(!CFG.favorites.length)FAVEDIT=false;saveCfg(true)}
+  else if(d.favadd){favSheet()}
+  else if(d.filterdone){N.resetFilter();CACHE.runMin=0;CACHE.filterSent=false;renderBanner();if(curPage==="smart")renderSmart();toast("Nice! Filter timer reset")}
+  else if(d.sadd){schEditor(-1)}
+  else if(d.sedit!==undefined){schEditor(+d.sedit)}
+  else if(d.stog!==undefined){const s=CFG.schedules[+d.stog];s.on=s.on===false;saveCfg(true);toast(s.on?"Schedule on":"Schedule paused")}
+  else if(d.slDay!==undefined){const x=+d.slDay,a=CFG.sleep.days||[];CFG.sleep.days=a.includes(x)?a.filter(v=>v!==x):[...a,x];saveCfg()}
+  else if(d.tg){setP(d.tg,!getP(d.tg));afterSmart(d.tg)}
+  else if(d.set){let v=d.v;if(v!==""&&!isNaN(+v))v=+v;setP(d.set,v);afterSmart(d.set)}
+  else if(d.gt){CFG.geo.arrive.actmp=String(Math.max(16,Math.min(30,(+CFG.geo.arrive.actmp||24)+(+d.gt))));saveCfg(true);renderSmart()}
+  else if(d.home){N.setHomeHere();toast("Finding your location…")}
+  else if(d.fix){if(d.fix==="location")N.requestPerm("location");else if(d.fix==="bg")N.requestPerm("background");else if(d.fix==="notif")N.requestPerm("notif");else N.openSettings(d.fix)}
+  else if(d.rate){CFG.tariff=Math.max(1,Math.min(25,(+CFG.tariff||8)+(+d.rate)));saveCfg();renderEnergy(false)}
+  else if(d.eday!==undefined){const x=ENERGY.L[+d.eday];if(x)toast(`${x.d.toLocaleDateString([],{weekday:"short",day:"numeric",month:"short"})} · ${x.kwh.toFixed(1)} kWh · ₹${Math.round(x.kwh*CFG.tariff)}`)}
+  else if(d.emon!==undefined){const x=ENERGY.M6[+d.emon];if(x)toast(`${x.d.toLocaleDateString([],{month:"long"})} · ${x.kwh.toFixed(0)} kWh · ₹${Math.round(x.kwh*CFG.tariff).toLocaleString("en-IN")}`)}
+});
+$("favEdit").onclick=()=>{FAVEDIT=!FAVEDIT;renderScenes()};
+function initPages(){try{PERMS=JSON.parse(N.perms())}catch(e){}
+  if(NATIVE){try{CACHE=JSON.parse(Native.getCache())}catch(e){}}
+  renderHomeExtras();renderPlans();setInterval(()=>{renderTimers();if(curPage==="plans")renderPlans()},30000)}
 
 /* =========================================================
    THE MEADOW — a living storybook world behind the whole app.
@@ -614,10 +1068,10 @@ function drawFx(ts){const dt=Math.min(50,ts-lastF||16)/16;lastF=ts;cx.clearRect(
 addEventListener("resize",()=>{sizeWorld();sizeFx()});
 /* ---- boot ---- */
 render();lastMood=moodKey();sizeWorld();sizeFx();requestAnimationFrame(drawWorld);requestAnimationFrame(drawFx);
+initPages();
 if(NATIVE){
-  drawEnergy([],[],false);
   if(Native.hasSaved()){setPill("wait","Signing in");Native.resume()}else showGate();
-  setInterval(()=>{if(!demo&&devId)Native.energy(devId)},30*60*1000);
+  setInterval(()=>{if(!demo&&devId)requestEnergy()},30*60*1000);
 }else{setPill("demo","Demo");startDemo()}
 </script>
 </body></html>
