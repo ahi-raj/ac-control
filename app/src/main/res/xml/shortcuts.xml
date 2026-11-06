@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="on" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_on">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="com.ahiraj.accontrol" android:targetClass="com.ahiraj.accontrol.ShortcutActivity">
+            <extra android:name="kind" android:value="on" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="off" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_off">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="com.ahiraj.accontrol" android:targetClass="com.ahiraj.accontrol.ShortcutActivity">
+            <extra android:name="kind" android:value="off" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="chill" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_chill">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="com.ahiraj.accontrol" android:targetClass="com.ahiraj.accontrol.ShortcutActivity">
+            <extra android:name="kind" android:value="chill" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="bedtime" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_bed">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="com.ahiraj.accontrol" android:targetClass="com.ahiraj.accontrol.ShortcutActivity">
+            <extra android:name="kind" android:value="bedtime" />
+        </intent>
+    </shortcut>
+</shortcuts>

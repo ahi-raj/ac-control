@@ -10,13 +10,15 @@ class Store(ctx: Context) {
     private val prefs: SharedPreferences = EncryptedSharedPreferences.create(
         "miraie_secure",
         MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
-        ctx,
+        ctx.applicationContext,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
     val user: String? get() = prefs.getString("user", null)
     val pass: String? get() = prefs.getString("pass", null)
+
+    fun hasCreds(): Boolean = user != null && pass != null
 
     fun save(user: String, pass: String) {
         prefs.edit().putString("user", user).putString("pass", pass).apply()
