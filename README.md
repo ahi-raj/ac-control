@@ -8,8 +8,12 @@ A sleek, futuristic remote for Panasonic **MirAIe** air conditioners (built for 
 3. Open the download → allow installs from your browser once → **Install**.
 4. Sign in with your MirAIe email/mobile and password.
 
-## What it controls
-Power · temperature dial · mode (Cool/Dry/Fan/Auto) · fan (Auto/Quiet/Low/Med/High) · Normal/Eco/Powerful · vertical swing · Converti capacity · nanoe · unit display · 7-day energy.
+## What it does
+- **Control:** power, temperature, mode, fan, Normal/Eco/Powerful/Self-clean, swing, Converti, nanoe, display
+- **Plans:** schedules, sleep curve, on/off timers, saved scenes
+- **Smart:** arrive-home (geofence), offline / on-too-long / too-cold alerts, filter reminder, hot-day boost with local weather
+- **Energy:** ₹ bill tracker, 14-day and 6-month charts, insights
+- **Everywhere:** home-screen widget, Quick Settings tile, long-press app shortcuts
 
 ## How it works
 ```
