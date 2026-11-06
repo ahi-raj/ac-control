@@ -54,13 +54,15 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
 .lbl{font:600 14px var(--display);margin:0 0 12px;display:flex;justify-content:space-between;gap:8px}
 .lbl b{font:700 18px var(--hand);color:var(--accent);line-height:1}
 /* ---------- hero: Mochi on the meadow ---------- */
-.hero{position:relative;aspect-ratio:360/250;width:min(100%,330px,52vh);max-width:100%;margin:-4px auto -8px}
+.heroRow{display:flex;align-items:flex-end;gap:10px;margin:-2px 0 -6px}
+.hero{position:relative;flex:none;aspect-ratio:360/250;width:min(50%,180px,26vh);max-width:100%}
+.side{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding-bottom:10px}
 .hero svg,.hero canvas{position:absolute;inset:0;width:100%;height:100%}
 .hero canvas{pointer-events:none}
-.chips{position:absolute;bottom:4px;left:0;display:flex;gap:6px;z-index:2}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
 .tag{font:600 11.5px var(--display);padding:3px 10px;border-radius:99px}
-.bubble{position:absolute;left:60%;top:20%;z-index:3;background:var(--paper-solid);border:2px solid var(--ink);font:700 17px/1.1 var(--hand);padding:6px 12px;border-radius:16px 16px 16px 4px;
-  max-width:38%;opacity:0;transform:scale(.6) translateY(8px);transform-origin:0 100%;transition:.25s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
+.bubble{position:relative;z-index:3;background:var(--paper-solid);border:2px solid var(--ink);font:700 17px/1.1 var(--hand);padding:6px 12px;border-radius:16px 16px 16px 4px;
+  max-width:100%;border-radius:4px 16px 16px 16px;opacity:0;transform:scale(.6);transform-origin:0 0;transition:.25s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
 .bubble.show{opacity:1;transform:none}
 #bun{cursor:pointer}
 .ear{transform-box:fill-box;transform-origin:50% 100%;animation:flap var(--fd,1.4s) ease-in-out infinite alternate}
@@ -199,6 +201,7 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
     </header>
     <small id="devSub" hidden>Panasonic SU18BKY3W</small>
     <div class="scroll" id="devPick" hidden></div>
+    <div class="heroRow">
     <section class="hero" id="stage">
     <svg viewBox="0 0 360 250" aria-label="Mochi the bunny reacts to your room">
       <!-- the AC unit, with a face -->
@@ -243,9 +246,9 @@ header small{display:block;font:500 11.5px var(--display);color:var(--soft)}
       </g>
     </svg>
     <canvas id="fx"></canvas>
-    <div class="chips"><span class="tag sticker" id="modeTag">Cool</span><span class="tag sticker" id="room">Room --</span></div>
-    <div class="bubble" id="bubble"></div>
   </section>
+    <div class="side"><div class="chips"><span class="tag sticker" id="modeTag">Cool</span><span class="tag sticker" id="room">Room --</span></div><div class="bubble" id="bubble"></div></div>
+    </div>
   </div>
 
   <div class="scroller" id="scroller">
