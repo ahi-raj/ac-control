@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AC Control</string>
+    <string name="widget_desc">Mochi + your AC: power and temperature</string>
+    <string name="sc_on">AC on</string>
+    <string name="sc_off">AC off</string>
+    <string name="sc_chill">Quick chill</string>
+    <string name="sc_bed">Bedtime</string>
+</resources>

@@ -1,0 +1,17 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="48dp" android:height="48dp" android:viewportWidth="120" android:viewportHeight="120">
+<path android:pathData="M29,34 a13,24 0 1,0 26,0 a13,24 0 1,0 -26,0 Z" android:fillColor="#FFE6F2FF" android:strokeColor="#FF3D3229" android:strokeWidth="2.5"/>
+<path android:pathData="M65,34 a13,24 0 1,0 26,0 a13,24 0 1,0 -26,0 Z" android:fillColor="#FFE6F2FF" android:strokeColor="#FF3D3229" android:strokeWidth="2.5"/>
+<path android:pathData="M36,36 a6,14 0 1,0 12,0 a6,14 0 1,0 -12,0 Z" android:fillColor="#FFF7C9C2"/>
+<path android:pathData="M72,36 a6,14 0 1,0 12,0 a6,14 0 1,0 -12,0 Z" android:fillColor="#FFF7C9C2"/>
+<path android:pathData="M14,76 a46,36 0 1,0 92,0 a46,36 0 1,0 -92,0 Z" android:fillColor="#FFE6F2FF" android:strokeColor="#FF3D3229" android:strokeWidth="2.5"/>
+<path android:pathData="M16,72 Q60,4 104,72" android:strokeColor="#FFE0A42B" android:strokeWidth="5"/>
+<path android:pathData="M5,76 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0 Z" android:fillColor="#FFFFD36B" android:strokeColor="#FF3D3229" android:strokeWidth="2"/>
+<path android:pathData="M95,76 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0 Z" android:fillColor="#FFFFD36B" android:strokeColor="#FF3D3229" android:strokeWidth="2"/>
+<path android:pathData="M39.4,76 a3.6,3.6 0 1,0 7.2,0 a3.6,3.6 0 1,0 -7.2,0 Z" android:fillColor="#FF3D3229"/>
+<path android:pathData="M73.4,76 a3.6,3.6 0 1,0 7.2,0 a3.6,3.6 0 1,0 -7.2,0 Z" android:fillColor="#FF3D3229"/>
+<path android:pathData="M23,87 a8,5 0 1,0 16,0 a8,5 0 1,0 -16,0 Z" android:fillColor="#FFC4DCF5"/>
+<path android:pathData="M81,87 a8,5 0 1,0 16,0 a8,5 0 1,0 -16,0 Z" android:fillColor="#FFC4DCF5"/>
+<path android:pathData="M57.4,85 a2.6,1.9 0 1,0 5.2,0 a2.6,1.9 0 1,0 -5.2,0 Z" android:fillColor="#FF8A5A44"/>
+<path android:pathData="M53,93 l2.4,-2.4 2.4,2.4 2.4,-2.4 2.4,2.4 2.4,-2.4 2.4,2.4" android:strokeColor="#FF3D3229" android:strokeWidth="1.8" android:strokeLineCap="round"/>
+<path android:pathData="M22,102 Q60,118 98,102 L100,111 Q60,128 20,111 Z" android:fillColor="#FFF58F8F" android:strokeColor="#FF3D3229" android:strokeWidth="2"/>
+</vector>
